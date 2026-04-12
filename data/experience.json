@@ -1,0 +1,61 @@
+{
+  "experiences": [
+    {
+      "id": "samparka",
+      "company": "Samparka Digital Loyalty",
+      "logoIcon": "code",
+      "logoBg": "bg-gray-900",
+      "current": true,
+      "roles": [
+        {
+          "id": "samparka-se",
+          "title": "Software Engineer",
+          "icon": "code",
+          "type": "Full-time",
+          "startDate": "2025-08",
+          "endDate": null,
+          "technologies": [
+            { "name": "Next.js",      "icon": "nextjs",      "color": "#000000" },
+            { "name": "TypeScript",   "icon": "typescript",  "color": "#3178C6" },
+            { "name": "Tailwind CSS", "icon": "tailwindcss", "color": "#06B6D4" },
+            { "name": "Node.js",      "icon": "nodejs",      "color": "#339933" },
+            { "name": "MongoDB",   "icon": "mongodb",  "color": "#228B22" }
+          ],
+          "whatIDid": [
+            "Build and maintain full-stack features across the loyalty platform.",
+            "Collaborate with the design team to ship production-ready components."
+          ],
+          "defaultExpanded": true
+        }
+      ]
+    },
+    {
+      "id": "upasthit",
+      "company": "Upasthit",
+      "logoIcon": "bulb",
+      "logoBg": "bg-gray-900",
+      "current": true,
+      "roles": [
+        {
+          "id": "upasthit-founder",
+          "title": "Founder",
+          "icon": "bulb",
+          "type": "Part-time",
+          "startDate": "2024-01",
+          "endDate": null,
+          "technologies": [
+            { "name": "Next.js",  "icon": "nextjs",  "color": "#000000" },
+            { "name": "React",    "icon": "react",   "color": "#61DAFB" },
+            { "name": "MongoDB",  "icon": "mongodb", "color": "#47A248" },
+            { "name": "Docker",   "icon": "docker",  "color": "#2496ED" }
+          ],
+          "whatIDid": [
+            "Lead product vision, design, and engineering for the platform.",
+            "Manage business operations, team coordination, and stakeholder communication."
+          ],
+          "defaultExpanded": false
+        }
+      ]
+    }
+  ]
+}

@@ -1,6 +1,140 @@
 @import "tailwindcss";
+@variant dark (&:where(.dark, .dark *));
+
+/* Theme variables */
+:root {
+  --bg: #fafafa;
+  --fg: #111111;
+  --navbar-bg: rgba(250, 250, 250, 0.85);
+  --border: #e5e7eb;
+}
+
+html.dark {
+  --bg: #0a0a0a;
+  --fg: #f0f0f0;
+  --navbar-bg: rgba(10, 10, 10, 0.85);
+  --border: #1f1f1f;
+}
 
 body {
-  background-color: #ffffff;
-  color: #000000;
+  background-color: var(--bg);
+  color: var(--fg);
 }
+
+/* View Transition: circle top-right effect */
+::view-transition-group(root) {
+  animation-duration: 0.8s;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+::view-transition-new(root) {
+  animation-name: reveal-light-circle;
+  animation-fill-mode: both;
+  transform-origin: top right;
+}
+
+::view-transition-old(root),
+html.dark::view-transition-old(root) {
+  animation: none;
+  z-index: -1;
+}
+
+html.dark::view-transition-new(root) {
+  animation-name: reveal-dark-circle;
+  animation-fill-mode: both;
+  transform-origin: top right;
+}
+
+@keyframes reveal-dark-circle {
+  from {
+    clip-path: circle(0% at 100% 0%);
+  }
+  to {
+    clip-path: circle(155% at 100% 0%);
+  }
+}
+
+@keyframes reveal-light-circle {
+  from {
+    clip-path: circle(0% at 100% 0%);
+  }
+  to {
+    clip-path: circle(155% at 100% 0%);
+  }
+}
+
+/* LightBulbToggle animations */
+@keyframes cord-pull {
+  0%   { transform: scaleY(1) rotate(0deg); }
+  20%  { transform: scaleY(1.45) rotate(0deg); }
+  45%  { transform: scaleY(0.88) rotate(-6deg); }
+  65%  { transform: scaleY(1.08) rotate(4deg); }
+  80%  { transform: scaleY(0.97) rotate(-2deg); }
+  100% { transform: scaleY(1) rotate(0deg); }
+}
+
+@keyframes cord-swing {
+  0%   { transform: rotate(0deg); }
+  15%  { transform: rotate(15deg); }
+  35%  { transform: rotate(-10deg); }
+  52%  { transform: rotate(6deg); }
+  68%  { transform: rotate(-3deg); }
+  82%  { transform: rotate(1.5deg); }
+  92%  { transform: rotate(-0.5deg); }
+  100% { transform: rotate(0deg); }
+}
+
+@keyframes cord-rays-pop {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.45);
+  }
+  28% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.18);
+  }
+}
+
+@keyframes cord-ray-burst {
+  0% {
+    opacity: 0;
+    transform: rotate(var(--ray-rot)) translateY(0) scaleY(0.45);
+  }
+  24% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: rotate(var(--ray-rot)) translateY(14px) scaleY(1.05);
+  }
+}
+
+.cord-spark {
+  width: 44px;
+  height: 44px;
+  animation: cord-rays-pop 0.46s ease-out forwards;
+}
+
+.cord-ray {
+  --ray-rot: 0deg;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2px;
+  height: 14px;
+  margin-top: -14px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--fg) 84%, transparent);
+  transform-origin: center 14px;
+  animation: cord-ray-burst 0.46s ease-out forwards;
+}
+
+.cord-ray:nth-child(1) { --ray-rot: -64deg; }
+.cord-ray:nth-child(2) { --ray-rot: -28deg; }
+.cord-ray:nth-child(3) { --ray-rot: 0deg; }
+.cord-ray:nth-child(4) { --ray-rot: 28deg; }
+.cord-ray:nth-child(5) { --ray-rot: 64deg; }

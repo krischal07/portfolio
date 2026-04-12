@@ -1,0 +1,10 @@
+{
+  "socials": [
+    { "name": "X",          "icon": "x",        "bg": "bg-black",     "url": "https://x.com/hwrCodes"               },
+    { "name": "GitHub",     "icon": "github",   "bg": "bg-gray-900",  "url": "https://github.com/krischal07"           },
+    { "name": "LinkedIn",   "icon": "linkedin", "bg": "bg-blue-600",  "url": "https://www.linkedin.com/in/krischal-shrestha-b74669230/"      },
+    { "name": "daily.dev",  "icon": "dailydev", "bg": "bg-gray-950",  "url": "https://app.daily.dev/username"        },
+    { "name": "Discord",    "icon": "discord",  "bg": "bg-indigo-500","url": "https://discord.com/users/username"    },
+    { "name": "YouTube",    "icon": "youtube",  "bg": "bg-red-600",   "url": "https://youtube.com/@username"         }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "tzOffset": 5.75,
+  "info": [
+    { "icon": "code",     "label": "Software Engineer", "highlight": "@Samparka Digital Loyalty", "fullWidth": true  },
+    { "icon": "bulb",     "label": "Founder",              "highlight": "@Upasthit", "fullWidth": true  },
+    { "icon": "location", "label": "Kathmandu, Nepal",     "highlight": null,           "fullWidth": false },
+    { "icon": "time",     "label": null,                   "highlight": null,           "fullWidth": false },
+    { "icon": "phone",    "label": "+977 9849468588",    "highlight": null,           "fullWidth": false },
+    { "icon": "email",    "label": "krischal.shrestha9849@gmail.com",   "highlight": null,           "fullWidth": false }
+  ]
+}
