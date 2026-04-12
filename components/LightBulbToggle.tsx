@@ -23,9 +23,27 @@ export default function LightBulbToggle() {
 
   // Scroll → swing
   useEffect(() => {
+    const isMobileLike =
+      window.matchMedia('(pointer: coarse)').matches ||
+      window.matchMedia('(hover: none)').matches ||
+      navigator.maxTouchPoints > 0
+
+    if (isMobileLike) return
+
+    let lastY = window.scrollY
+    let lastTriggerAt = 0
+
     const handleScroll = () => {
+      const now = performance.now()
+      const deltaY = Math.abs(window.scrollY - lastY)
+      lastY = window.scrollY
+
+      if (deltaY < 6 || now - lastTriggerAt < 220) return
+
+      lastTriggerAt = now
       setCordState(prev => (prev === 'pull' || prev === 'swing') ? prev : 'swing')
     }
+
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
@@ -48,7 +66,7 @@ export default function LightBulbToggle() {
   }, [])
 
   const handleAnimationEnd = useCallback(() => {
-    setCordState('idle')
+    setCordState(prev => (prev === 'idle' ? prev : 'idle'))
   }, [])
 
   return (

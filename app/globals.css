@@ -3,15 +3,15 @@
 
 /* Theme variables */
 :root {
-  --bg: #fafafa;
+  --bg: #ffffff;
   --fg: #111111;
-  --navbar-bg: rgba(250, 250, 250, 0.85);
+  --navbar-bg: rgba(255, 255, 255, 0.9);
   --border: #e5e7eb;
 }
 
 html.dark {
   --bg: #0a0a0a;
-  --fg: #f0f0f0;
+  --fg: #ffffff;
   --navbar-bg: rgba(10, 10, 10, 0.85);
   --border: #1f1f1f;
 }
@@ -19,6 +19,10 @@ html.dark {
 body {
   background-color: var(--bg);
   color: var(--fg);
+}
+
+html {
+  background-color: var(--bg);
 }
 
 /* View Transition: circle top-right effect */
@@ -138,3 +142,10 @@ html.dark::view-transition-new(root) {
 .cord-ray:nth-child(3) { --ray-rot: 0deg; }
 .cord-ray:nth-child(4) { --ray-rot: 28deg; }
 .cord-ray:nth-child(5) { --ray-rot: 64deg; }
+
+@media (prefers-reduced-motion: reduce) {
+  .cord-spark,
+  .cord-ray {
+    animation: none !important;
+  }
+}

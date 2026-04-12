@@ -16,7 +16,7 @@ const Navbar = () => {
   const pathname = usePathname()
 
   return (
-    <nav className="sticky top-0 z-50 w-full backdrop-blur-sm bg-white/90 dark:bg-black/80 border-b border-gray-200 dark:border-neutral-800">
+    <nav className="sticky top-0 z-50 w-full backdrop-blur-sm bg-[var(--navbar-bg)] dark:bg-black/80 border-b border-gray-200 dark:border-neutral-800">
       <div className="mx-auto md:max-w-3xl w-full px-4 h-12 flex items-center justify-between">
         {/* Left: nav links */}
         <ul className="flex items-center gap-6">
