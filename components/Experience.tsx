@@ -151,7 +151,7 @@ function RoleCard({
                       <div
                         key={tech.name}
                         title={tech.name}
-                        className="w-10 h-10 rounded-lg border border-dashed border-gray-300 dark:border-neutral-600 flex items-center justify-center"
+                        className="w-10 h-10 rounded-lg border border-dashed border-gray-300 dark:border-neutral-600 dark:bg-zinc-800 flex items-center justify-center"
                       >
                         <Icon style={{ color: tech.color }} className="text-xl" />
                       </div>
@@ -208,11 +208,13 @@ const Experience = () => {
       {experienceData.experiences.map((company, idx) => (
         <div key={company.id} className={idx > 0 ? 'border-t border-gray-100 dark:border-neutral-800 pt-5' : ''}>
           {/* Company header */}
-          <div className="flex items-center gap-2.5 mb-4">
+          <div className="flex justify-between gap-2.5 mb-4">
+<div className='flex justify-between gap-2.5 items-center'>
+
             <CompanyLogo icon={company.logoIcon} bg={company.logoBg} />
             <span className="text-base font-bold text-gray-900 dark:text-gray-100">{company.company}</span>
 
-            {company.current && (
+              {company.current && (
               <span className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-green-100 dark:bg-green-900/30 text-xs text-gray-700 dark:text-green-300">
                 <span className="relative flex w-1.5 h-1.5 shrink-0">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
@@ -221,7 +223,16 @@ const Experience = () => {
                 Working
               </span>
             )}
-       
+</div>
+
+          
+            <div>
+
+<span className='text-xs'>
+     {company.location}
+    
+    </span>      
+            </div>
             
           </div>
 

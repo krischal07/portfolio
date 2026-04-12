@@ -67,8 +67,8 @@ const SubInfo = () => {
   const { time, offset } = useLocalTime(subinfoData.tzOffset)
 
   return (
-    <section className="flex flex-col gap-6 py-4">
-      <div className="grid grid-cols-2 gap-x-6 gap-y-3">
+    <section className="flex flex-col gap-6 py-2">
+      <div className="grid grid-cols-1 gap-x-6 gap-y-3 sm:grid-cols-2">
         {subinfoData.info.map((item) => {
           const Icon = ICON_MAP[item.icon]
 
@@ -77,7 +77,7 @@ const SubInfo = () => {
               time ? (
                 <span className="text-sm text-gray-700 dark:text-gray-300">
                   <span className="font-medium">{time}</span>
-                  <span className="text-gray-400 dark:text-neutral-500"> // {offset}</span>
+                  {/* <span className="text-gray-400 dark:text-neutral-500"> // {offset}</span> */}
                 </span>
               ) : null
             ) : (
@@ -92,7 +92,7 @@ const SubInfo = () => {
           return (
             <div
               key={item.icon}
-              className={item.fullWidth ? 'col-span-2' : ''}
+              className={item.fullWidth ? 'sm:col-span-2' : ''}
             >
               <div className="flex items-center gap-3">
                 <IconBox>

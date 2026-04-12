@@ -4,6 +4,8 @@
       "id": "samparka",
       "company": "Samparka Digital Loyalty",
       "logoIcon": "code",
+          "location":"Kathmandu, Nepal",
+
       "logoBg": "bg-gray-900",
       "current": true,
       "roles": [
@@ -33,6 +35,7 @@
       "id": "upasthit",
       "company": "Upasthit",
       "logoIcon": "bulb",
+      "location":"Kathmandu, Nepal",
       "logoBg": "bg-gray-900",
       "current": true,
       "roles": [

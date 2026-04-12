@@ -7,9 +7,9 @@ import LightBulbToggle from './LightBulbToggle'
 
 const navLinks = [
   { label: 'Home', href: '/' },
-  { label: 'Work', href: '/work' },
+  // { label: 'Work', href: '/work' },
   { label: 'Blog', href: '/blog' },
-  { label: 'Resume', href: '/resume' },
+  // { label: 'Resume', href: '/resume' },
 ]
 
 const Navbar = () => {
