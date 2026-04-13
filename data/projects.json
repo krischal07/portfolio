@@ -1,0 +1,89 @@
+{
+  "journeyNodes": [
+    {
+      "id": "node-1",
+      "type": "milestone",
+      "iconName": "bulb",
+      "iconColor": "#ffffff",
+      "iconBgColor": "#0d9488",
+      "category": "ORIGIN",
+      "title": "Started Learning to Code",
+      "description": "Picked up HTML and CSS out of curiosity. Built first static site in a weekend.",
+      "tech": []
+    },
+    {
+      "id": "node-2",
+      "type": "project",
+      "iconName": "rocket",
+      "iconColor": "#ffffff",
+      "iconBgColor": "#7c3aed",
+      "category": "PROJECT",
+      "title": "Rocket Space",
+      "description": "Design studio building fast, minimal websites for startups and creators.",
+      "tech": ["nextjs", "tailwindcss", "figma"]
+    },
+    {
+      "id": "node-3",
+      "type": "milestone",
+      "iconName": "code",
+      "iconColor": "#ffffff",
+      "iconBgColor": "#0891b2",
+      "category": "MILESTONE",
+      "title": "First Full-Stack App",
+      "description": "Shipped a full-stack app with auth, database, and deployment — end to end.",
+      "tech": ["nodejs", "postgresql", "react"]
+    },
+    {
+      "id": "node-4",
+      "type": "project",
+      "iconName": "database",
+      "iconColor": "#ffffff",
+      "iconBgColor": "#0e7490",
+      "category": "PRODUCT",
+      "title": "Samparka Digital Loyalty",
+      "description": "Digital loyalty platform connecting businesses and customers at scale.",
+      "tech": ["nextjs", "typescript", "mongodb", "nodejs"]
+    },
+    {
+      "id": "node-5",
+      "type": "project",
+      "iconName": "people",
+      "iconColor": "#ffffff",
+      "iconBgColor": "#059669",
+      "category": "PRODUCT",
+      "title": "Upasthit",
+      "description": "Attendance and team management platform built for modern organizations.",
+      "tech": ["nextjs", "react", "docker", "mongodb"]
+    }
+  ],
+  "connections": [
+    {
+      "id": "conn-1",
+      "from": "node-1",
+      "to": "node-2",
+      "label": "6 months later",
+      "labelType": "time"
+    },
+    {
+      "id": "conn-2",
+      "from": "node-2",
+      "to": "node-3",
+      "label": "learned React",
+      "labelType": "action"
+    },
+    {
+      "id": "conn-3",
+      "from": "node-3",
+      "to": "node-4",
+      "label": "1 year later",
+      "labelType": "time"
+    },
+    {
+      "id": "conn-4",
+      "from": "node-4",
+      "to": "node-5",
+      "label": "founded Upasthit",
+      "labelType": "action"
+    }
+  ]
+}
