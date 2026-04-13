@@ -13,6 +13,7 @@ import type { LabelType } from '@/lib/canvas-types'
 interface EdgeData {
   label?: string | null
   labelType?: LabelType
+  compactMode?: boolean
 }
 
 function CanvasEdgeLabel({
@@ -28,6 +29,7 @@ function CanvasEdgeLabel({
   selected,
 }: EdgeProps) {
   const edgeData = (data ?? {}) as EdgeData
+  const isCompact = edgeData.compactMode ?? false
 
   const [edgePath, labelX, labelY] = getBezierPath({
     sourceX,
@@ -59,11 +61,14 @@ function CanvasEdgeLabel({
               transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
             }}
           >
-            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white dark:bg-neutral-900 border border-gray-200 dark:border-neutral-700 text-[9px] font-semibold tracking-wider uppercase text-gray-500 dark:text-neutral-400 shadow-sm whitespace-nowrap">
+            <span className={[
+              'inline-flex items-center rounded-full bg-white dark:bg-neutral-900 border border-gray-200 dark:border-neutral-700 font-semibold tracking-wider uppercase text-gray-500 dark:text-neutral-400 shadow-sm whitespace-nowrap',
+              isCompact ? 'gap-1 px-3 py-1 text-[10px]' : 'gap-1 px-2.5 py-0.5 text-[9px]',
+            ].join(' ')}>
               {edgeData.labelType === 'time' ? (
-                <IoTimeOutline className="text-[9px] shrink-0" />
+                <IoTimeOutline className={isCompact ? 'text-[10px] shrink-0' : 'text-[9px] shrink-0'} />
               ) : (
-                <IoArrowForwardOutline className="text-[9px] shrink-0" />
+                <IoArrowForwardOutline className={isCompact ? 'text-[10px] shrink-0' : 'text-[9px] shrink-0'} />
               )}
               {edgeData.label}
             </span>

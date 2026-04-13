@@ -1,14 +1,20 @@
-export const dynamic = 'force-dynamic'
+export const revalidate = 300
 
 import { db } from '@/lib/db'
 import { projectNode, projectEdge } from '@/lib/db/schema'
 import { asc } from 'drizzle-orm'
 import type { RFNode, RFEdge } from '@/components/canvas/ProjectCanvas'
 import ProjectsViewCanvasLoader from '@/components/canvas/ProjectsViewCanvasLoader'
+import MobileProjectsCanvas from '@/components/canvas/MobileProjectsCanvas'
 
 const NODE_WIDTH = 220
 const NODE_HEIGHT = 190
 const CANVAS_PADDING = 80
+const MOBILE_CANVAS_WIDTH = 360
+const MOBILE_CANVAS_PADDING = 14
+const MOBILE_NODE_WIDTH = 184
+const MOBILE_NODE_HEIGHT = 176
+const MOBILE_LABEL_BUFFER = 64
 
 export default async function ProjectsPage() {
   const [nodes, edges] = await Promise.all([
@@ -63,10 +69,48 @@ export default async function ProjectsPage() {
     },
   }))
 
+  const mobileEdges: RFEdge[] = rfEdges.map((edge) => ({
+    ...edge,
+    data: {
+      ...edge.data,
+      compactMode: true,
+    },
+  }))
+
+  const minRfX = Math.min(...rfNodes.map((n) => n.position.x))
+  const maxRfX = Math.max(...rfNodes.map((n) => n.position.x))
+  const minRfY = Math.min(...rfNodes.map((n) => n.position.y))
+  const maxRfY = Math.max(...rfNodes.map((n) => n.position.y))
+  const horizontalRange = Math.max(1, maxRfX - minRfX)
+  const verticalRange = Math.max(1, maxRfY - minRfY)
+  const availableMobileWidth =
+    MOBILE_CANVAS_WIDTH - MOBILE_NODE_WIDTH - MOBILE_CANVAS_PADDING * 2 - MOBILE_LABEL_BUFFER
+  const mobileXScale = Math.min(1, Math.max(0.7, availableMobileWidth / horizontalRange))
+  const mobileYScale = Math.max(0.92, mobileXScale * 1.08)
+
+  const mobileNodes: RFNode[] = rfNodes.map((n) => ({
+    ...n,
+    position: {
+      x: (n.position.x - minRfX) * mobileXScale + MOBILE_CANVAS_PADDING,
+      y: (n.position.y - minRfY) * mobileYScale + MOBILE_CANVAS_PADDING,
+    },
+    data: {
+      ...n.data,
+      compactMode: true,
+    },
+  }))
+
   const maxX = Math.max(...rfNodes.map((n) => n.position.x + NODE_WIDTH))
   const maxY = Math.max(...rfNodes.map((n) => n.position.y + NODE_HEIGHT))
   const canvasWidth = Math.max(760, Math.ceil(maxX + CANVAS_PADDING))
   const canvasHeight = Math.max(560, Math.ceil(maxY + CANVAS_PADDING))
+
+  const mobileMaxY = Math.max(...mobileNodes.map((n) => n.position.y + MOBILE_NODE_HEIGHT))
+  const mobileCanvasWidth = MOBILE_CANVAS_WIDTH
+  const mobileCanvasHeight = Math.max(
+    520,
+    Math.ceil(mobileMaxY + MOBILE_CANVAS_PADDING + verticalRange * 0.06)
+  )
 
   return (
     <main className="mx-auto md:max-w-3xl w-full px-4 py-8">
@@ -74,7 +118,16 @@ export default async function ProjectsPage() {
         Projects
       </h2>
 
-      <div className="w-full overflow-x-auto">
+      <div className="md:hidden w-full">
+        <MobileProjectsCanvas
+          nodes={mobileNodes}
+          edges={mobileEdges}
+          canvasWidth={mobileCanvasWidth}
+          canvasHeight={mobileCanvasHeight}
+        />
+      </div>
+
+      <div className="hidden md:block w-full overflow-x-auto">
         <div style={{ width: canvasWidth, height: canvasHeight }}>
           <ProjectsViewCanvasLoader nodes={rfNodes} edges={rfEdges} />
         </div>

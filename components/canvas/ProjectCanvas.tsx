@@ -33,7 +33,7 @@ const nodeTypes: NodeTypes = { journeyNode: CanvasNodeCard }
 const edgeTypes: EdgeTypes = { journeyEdge: CanvasEdgeLabel }
 
 export type RFNode = Node<CanvasNodeCardData>
-export type RFEdge = Edge<{ label?: string | null; labelType?: 'time' | 'action' }>
+export type RFEdge = Edge<{ label?: string | null; labelType?: 'time' | 'action'; compactMode?: boolean }>
 
 interface ProjectCanvasProps {
   initialNodes: RFNode[]
@@ -65,7 +65,7 @@ function CanvasInner({ initialNodes, initialEdges }: ProjectCanvasProps) {
         labelType: edge.data?.labelType ?? 'action',
       })
     }
-  }, [selectedEdgeId])
+  }, [selectedEdgeId, edges])
 
   const onNodesChange = useCallback((changes: NodeChange[]) => {
     setNodes((nds) => applyNodeChanges(changes, nds) as RFNode[])

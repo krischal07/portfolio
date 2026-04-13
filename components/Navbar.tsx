@@ -25,6 +25,7 @@ const Navbar = () => {
             <li key={href}>
               <Link
                 href={href}
+                prefetch
                 className={`text-sm transition-colors ${
                   pathname === href
                     ? 'text-gray-900 dark:text-gray-100 font-medium'

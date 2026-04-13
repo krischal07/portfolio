@@ -2,9 +2,13 @@
 
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
-import animationData from '@/public/lottie/under-construction.json'
 
-const Lottie = dynamic(() => import('lottie-react'), { ssr: false })
+const BlogConstructionAnimation = dynamic(
+  () => import('@/components/BlogConstructionAnimation'),
+  {
+    ssr: false,
+  }
+)
 
 const BlogPage = () => {
   return (
@@ -12,7 +16,7 @@ const BlogPage = () => {
       <section className="w-full rounded-3xl border border-gray-200/80 bg-gradient-to-b from-white to-gray-50 p-6 text-center shadow-sm dark:border-neutral-800 dark:from-neutral-950 dark:to-black sm:p-10">
         <div className="mx-auto w-full max-w-[260px] sm:max-w-[340px] md:max-w-[380px]">
           <div className=" flex items-start aspect-square w-full rounded-2xl bg-white dark:bg-black p-2 sm:p-3 relative">
-            <Lottie animationData={animationData} loop autoplay className=" h-full w-full absolute right-5 md:right-10" />
+            <BlogConstructionAnimation />
           </div>
         </div>
 

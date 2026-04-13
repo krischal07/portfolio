@@ -7,17 +7,20 @@ import { FiGithub, FiExternalLink } from 'react-icons/fi'
 import { NODE_ICON_MAP, TECH_ICON_MAP, TECH_COLORS } from '@/lib/canvas-icons'
 import type { RFNodeData } from '@/lib/canvas-types'
 
-export type CanvasNodeCardData = RFNodeData & { editorMode?: boolean }
+export type CanvasNodeCardData = RFNodeData & { editorMode?: boolean; compactMode?: boolean }
 
 function CanvasNodeCard({ data, selected }: NodeProps) {
   const nodeData = data as CanvasNodeCardData
   const Icon = NODE_ICON_MAP[nodeData.iconName] ?? IoBulbOutline
   const isEditor = nodeData.editorMode ?? false
+  const isCompact = nodeData.compactMode ?? false
 
   return (
     <div
       className={[
-        'w-[220px] bg-white dark:bg-neutral-900 border rounded-2xl shadow-sm p-4 flex flex-col gap-2 transition-all',
+        isCompact
+          ? 'w-[184px] bg-white dark:bg-neutral-900 border rounded-xl shadow-sm p-3 flex flex-col gap-1.5 transition-all'
+          : 'w-[220px] bg-white dark:bg-neutral-900 border rounded-2xl shadow-sm p-4 flex flex-col gap-2 transition-all',
         selected
           ? 'border-blue-500 ring-2 ring-blue-400/30'
           : 'border-gray-200 dark:border-neutral-700',
@@ -62,21 +65,27 @@ function CanvasNodeCard({ data, selected }: NodeProps) {
       </>
 
       {/* Header: icon + category + title */}
-      <div className="flex items-start gap-3">
+      <div className={isCompact ? 'flex items-start gap-3' : 'flex items-start gap-3'}>
         <span
-          className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 text-base"
+          className={isCompact
+            ? 'w-9 h-9 rounded-lg flex items-center justify-center shrink-0 text-sm'
+            : 'w-10 h-10 rounded-xl flex items-center justify-center shrink-0 text-base'}
           style={{ backgroundColor: nodeData.iconBgColor, color: nodeData.iconColor }}
         >
           <Icon />
         </span>
-        <div className="flex flex-col gap-0.5 min-w-0 pt-1">
-          <div className="flex items-center gap-1.5 flex-wrap">
-            <span className="text-[9px] font-semibold tracking-widest uppercase text-gray-400 dark:text-neutral-500">
+        <div className={isCompact ? 'flex flex-col gap-0.5 min-w-0 pt-0.5' : 'flex flex-col gap-0.5 min-w-0 pt-1'}>
+          <div className={isCompact ? 'flex items-center gap-1 flex-wrap' : 'flex items-center gap-1.5 flex-wrap'}>
+            <span className={isCompact
+              ? 'text-[8px] font-semibold tracking-widest uppercase text-gray-400 dark:text-neutral-500'
+              : 'text-[9px] font-semibold tracking-widest uppercase text-gray-400 dark:text-neutral-500'}>
               {nodeData.category}
             </span>
             <span
               className={[
-                'text-[8px] font-bold tracking-wider uppercase px-1.5 py-0.5 rounded-full',
+                isCompact
+                  ? 'text-[8px] font-bold tracking-wider uppercase px-1.5 py-0.5 rounded-full'
+                  : 'text-[8px] font-bold tracking-wider uppercase px-1.5 py-0.5 rounded-full',
                 nodeData.nodeType === 'milestone'
                   ? 'bg-teal-100 text-teal-700 dark:bg-teal-900/40 dark:text-teal-400'
                   : 'bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-400',
@@ -85,7 +94,9 @@ function CanvasNodeCard({ data, selected }: NodeProps) {
               {nodeData.nodeType}
             </span>
           </div>
-          <span className="text-sm font-bold text-gray-900 dark:text-gray-100 leading-tight truncate">
+          <span className={isCompact
+            ? 'text-[14px] font-bold text-gray-900 dark:text-gray-100 leading-tight truncate'
+            : 'text-sm font-bold text-gray-900 dark:text-gray-100 leading-tight truncate'}>
             {nodeData.title}
           </span>
         </div>
@@ -93,21 +104,25 @@ function CanvasNodeCard({ data, selected }: NodeProps) {
 
       {/* Description */}
       {nodeData.description && (
-        <p className="text-xs text-gray-500 dark:text-neutral-400 leading-relaxed line-clamp-3">
+        <p className={isCompact
+          ? 'text-[12px] text-gray-500 dark:text-neutral-400 leading-relaxed line-clamp-3'
+          : 'text-xs text-gray-500 dark:text-neutral-400 leading-relaxed line-clamp-3'}>
           {nodeData.description}
         </p>
       )}
 
       {/* Date */}
       {nodeData.date && (
-        <p className="text-[10px] text-gray-400 dark:text-neutral-500 italic">
+        <p className={isCompact
+          ? 'text-[10px] text-gray-400 dark:text-neutral-500 italic'
+          : 'text-[10px] text-gray-400 dark:text-neutral-500 italic'}>
           {nodeData.date}
         </p>
       )}
 
       {/* Tech stack badges */}
       {nodeData.techStack.length > 0 && (
-        <div className="flex flex-wrap gap-1.5">
+        <div className={isCompact ? 'flex flex-wrap gap-1.5' : 'flex flex-wrap gap-1.5'}>
           {nodeData.techStack.map((techKey) => {
             const TechIcon = TECH_ICON_MAP[techKey]
             if (!TechIcon) return null
@@ -115,10 +130,12 @@ function CanvasNodeCard({ data, selected }: NodeProps) {
               <div
                 key={techKey}
                 title={techKey}
-                className="w-6 h-6 rounded-md border border-dashed border-gray-200 dark:border-neutral-700 dark:bg-zinc-800 flex items-center justify-center"
+                className={isCompact
+                  ? 'w-5.5 h-5.5 rounded-md border border-dashed border-gray-200 dark:border-neutral-700 dark:bg-zinc-800 flex items-center justify-center'
+                  : 'w-6 h-6 rounded-md border border-dashed border-gray-200 dark:border-neutral-700 dark:bg-zinc-800 flex items-center justify-center'}
               >
                 <TechIcon
-                  className="text-[10px]"
+                  className={isCompact ? 'text-[10px]' : 'text-[10px]'}
                   style={{ color: TECH_COLORS[techKey] ?? '#888' }}
                 />
               </div>
@@ -129,16 +146,20 @@ function CanvasNodeCard({ data, selected }: NodeProps) {
 
       {/* Links */}
       {(nodeData.githubUrl || nodeData.liveUrl) && (
-        <div className="flex items-center gap-2 pt-1 border-t border-gray-100 dark:border-neutral-800">
+        <div className={isCompact
+          ? 'flex items-center gap-2 pt-1.5 border-t border-gray-100 dark:border-neutral-800'
+          : 'flex items-center gap-2 pt-1 border-t border-gray-100 dark:border-neutral-800'}>
           {nodeData.githubUrl && (
             <a
               href={nodeData.githubUrl}
               target="_blank"
               rel="noopener noreferrer"
               onClick={(e) => e.stopPropagation()}
-              className="flex items-center gap-1 text-[10px] text-gray-500 dark:text-neutral-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+              className={isCompact
+                ? 'flex items-center gap-1 text-[10px] text-gray-500 dark:text-neutral-400 hover:text-gray-900 dark:hover:text-white transition-colors'
+                : 'flex items-center gap-1 text-[10px] text-gray-500 dark:text-neutral-400 hover:text-gray-900 dark:hover:text-white transition-colors'}
             >
-              <FiGithub className="text-xs" />
+              <FiGithub className={isCompact ? 'text-[11px]' : 'text-xs'} />
               <span>GitHub</span>
             </a>
           )}
@@ -148,9 +169,11 @@ function CanvasNodeCard({ data, selected }: NodeProps) {
               target="_blank"
               rel="noopener noreferrer"
               onClick={(e) => e.stopPropagation()}
-              className="flex items-center gap-1 text-[10px] text-gray-500 dark:text-neutral-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+              className={isCompact
+                ? 'flex items-center gap-1 text-[10px] text-gray-500 dark:text-neutral-400 hover:text-gray-900 dark:hover:text-white transition-colors'
+                : 'flex items-center gap-1 text-[10px] text-gray-500 dark:text-neutral-400 hover:text-gray-900 dark:hover:text-white transition-colors'}
             >
-              <FiExternalLink className="text-xs" />
+              <FiExternalLink className={isCompact ? 'text-[11px]' : 'text-xs'} />
               <span>Live</span>
             </a>
           )}
