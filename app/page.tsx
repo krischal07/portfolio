@@ -1,8 +1,23 @@
+import type { Metadata } from "next";
 import Experience from '@/components/Experience'
 import GithubActivity from '@/components/GithubActivity'
 import Header from '@/components/Header'
 import SocialMediaHandles from '@/components/SocialMediaHandles'
 import SubInfo from '@/components/SubInfo'
+
+export const metadata: Metadata = {
+  title: {
+    absolute: "Krischal Shrestha — Software Engineer",
+  },
+  description:
+    "Krischal Shrestha is a design-minded software engineer building scalable systems. Founder of Rocket Space, building Samparka and Upasthit.",
+  alternates: {
+    canonical: "https://krischal.space",
+  },
+  openGraph: {
+    url: "https://krischal.space",
+  },
+};
 
 const Home = () => {
   return (
