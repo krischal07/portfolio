@@ -44,19 +44,17 @@ const Header = () => {
       </div>
 
       {/* Row 2: Bio */}
-      <p className="text-sm text-gray-600 dark:text-neutral-400">
-      <p>
-I’m a <em>software engineer</em> mostly messing with <strong>AI</strong> and code, breaking things and then acting surprised when they break. Currently building <strong>Samparka</strong> and <strong>Upasthit</strong> trying to make products that actually work, not just look good in demos.
-</p>
-<br />
-<p>
-I also run <strong>Rocket Space</strong>, where I design fast, <em>minimal</em> websites… because nothing screams bad engineering like a slow “modern” site.
-</p>
-<br />
-<p>
-Ship, monitor, iterate, scale. <strong>everyday</strong>.
-</p>
-      </p>
+      <div className="flex flex-col gap-3 text-sm text-gray-600 dark:text-neutral-400">
+        <p>
+          I&apos;m a <em>software engineer</em> mostly messing with <strong>AI</strong> and code, breaking things and then acting surprised when they break. Currently building <strong>Samparka</strong> and <strong>Upasthit</strong> trying to make products that actually work, not just look good in demos.
+        </p>
+        <p>
+          I also run <strong>Rocket Space</strong>, where I design fast, <em>minimal</em> websites… because nothing screams bad engineering like a slow &ldquo;modern&rdquo; site.
+        </p>
+        <p>
+          Ship, monitor, iterate, scale. <strong>everyday</strong>.
+        </p>
+      </div>
 
  
 

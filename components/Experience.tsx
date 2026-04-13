@@ -84,13 +84,36 @@ function IconBox({ icon }: { icon: string }) {
 }
 
 // ── Company logo (circular) ────────────────────────────────────
-function CompanyLogo({ icon, bg }: { icon: string; bg: string }) {
+function CompanyLogo({
+  icon,
+  bg,
+  logoPath,
+  logoPathLight,
+  logoPathDark,
+}: {
+  icon: string;
+  bg: string;
+  logoPath?: string;
+  logoPathLight?: string;
+  logoPathDark?: string;
+}) {
   const Icon = ROLE_ICON_MAP[icon] ?? IoCodeSlashOutline;
+  const hasImage = logoPathLight || logoPath;
+
   return (
     <span
-      className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 text-white text-base ${bg}`}
+      className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 overflow-hidden border border-gray-200 dark:border-neutral-700 ${hasImage ? bg : `text-white text-base ${bg}`}`}
     >
-      <Icon />
+      {logoPathLight && logoPathDark ? (
+        <>
+          <img src={logoPathLight} alt={icon} className="w-full h-full object-contain p-1 block dark:hidden" />
+          <img src={logoPathDark} alt={icon} className="w-full h-full object-contain p-1 hidden dark:block" />
+        </>
+      ) : logoPath ? (
+        <img src={logoPath} alt={icon} className="w-full h-full object-contain p-1" />
+      ) : (
+        <Icon />
+      )}
     </span>
   );
 }
@@ -108,19 +131,19 @@ function RoleCard({
   onToggle: () => void;
 }) {
   return (
-    <div className="flex items-start gap-3">
+    <div className="flex items-start gap-2.5 sm:gap-3">
       <IconBox icon={role.icon} />
 
       <div className="flex-1 min-w-0">
         {/* Title row */}
         <div className="flex items-start justify-between gap-2">
-          <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+          <span className="text-sm font-semibold text-gray-900 dark:text-gray-100 leading-snug">
             {role.title}
           </span>
           <button
             onClick={onToggle}
             aria-label={expanded ? "Collapse" : "Expand"}
-            className="text-gray-400 dark:text-neutral-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors mt-0.5 shrink-0"
+            className="text-gray-400 dark:text-neutral-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors mt-0.5 shrink-0 p-0.5"
           >
             {expanded ? (
               <IoCloseOutline className="text-base" />
@@ -134,7 +157,7 @@ function RoleCard({
         </div>
 
         {/* Meta: type | date range | duration */}
-        <p className="text-xs text-gray-400 dark:text-neutral-500 flex items-center gap-1.5 mt-0.5 flex-wrap">
+        <p className="text-xs text-gray-400 dark:text-neutral-500 flex items-center gap-1 sm:gap-1.5 mt-1 flex-wrap">
           <span>{role.type}</span>
           <span className="text-gray-200 dark:text-neutral-700">|</span>
           <span>
@@ -145,10 +168,10 @@ function RoleCard({
         </p>
 
         {expanded && (
-          <>
+          <div className="mt-3 flex flex-col gap-4">
             {/* Technologies & Tools */}
             {role.technologies.length > 0 && (
-              <div className="mt-3">
+              <div>
                 <p className="text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2">
                   Technologies &amp; Tools
                 </p>
@@ -159,11 +182,11 @@ function RoleCard({
                       <div
                         key={tech.name}
                         title={tech.name}
-                        className="w-10 h-10 rounded-lg border border-dashed border-gray-300 dark:border-neutral-600 dark:bg-zinc-800 flex items-center justify-center"
+                        className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg border border-dashed border-gray-300 dark:border-neutral-600 dark:bg-zinc-800 flex items-center justify-center"
                       >
                         <Icon
                           style={{ color: tech.color }}
-                          className="text-xl"
+                          className="text-lg sm:text-xl"
                         />
                       </div>
                     );
@@ -174,24 +197,24 @@ function RoleCard({
 
             {/* What I've done */}
             {role.whatIDid.length > 0 && (
-              <div className="mt-3">
+              <div>
                 <p className="text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2">
                   What I&apos;ve done
                 </p>
-                <ul className="flex flex-col gap-1.5">
+                <ul className="flex flex-col gap-2">
                   {role.whatIDid.map((item, i) => (
                     <li
                       key={i}
-                      className="flex items-start gap-2 text-sm text-gray-500 dark:text-neutral-400"
+                      className="flex items-start gap-2 text-xs sm:text-sm text-gray-500 dark:text-neutral-400 leading-relaxed"
                     >
-                      <span className="mt-1.5 w-1.5 h-1.5 bg-gray-400 dark:bg-neutral-500 shrink-0" />
+                      <span className="mt-1.5 w-1.5 h-1.5 bg-gray-400 dark:bg-neutral-500 rounded-full shrink-0" />
                       {item}
                     </li>
                   ))}
                 </ul>
               </div>
             )}
-          </>
+          </div>
         )}
       </div>
     </div>
@@ -219,7 +242,7 @@ const Experience = () => {
 
   return (
     <section className="flex flex-col py-4">
-      <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+      <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-5">
         Experience
       </h2>
 
@@ -228,20 +251,26 @@ const Experience = () => {
           key={company.id}
           className={
             idx > 0
-              ? "border-t border-gray-100 dark:border-neutral-800 pt-5"
+              ? "border-t border-gray-100 dark:border-neutral-800 pt-5 mt-1"
               : ""
           }
         >
           {/* Company header */}
-          <div className="flex justify-between gap-2.5 mb-4">
-            <div className="flex justify-between gap-2.5 items-center">
-              <CompanyLogo icon={company.logoIcon} bg={company.logoBg} />
-              <span className="text-base font-bold text-gray-900 dark:text-gray-100">
+          <div className="flex flex-wrap items-center justify-between gap-y-2 gap-x-3 mb-4">
+            <div className="flex items-center gap-2.5 min-w-0 flex-wrap gap-y-1">
+              <CompanyLogo
+                icon={company.logoIcon}
+                bg={company.logoBg}
+                logoPath={company.logoPath}
+                logoPathLight={company.logoPathLight}
+                logoPathDark={company.logoPathDark}
+              />
+              <span className="text-base font-bold text-gray-900 dark:text-gray-100 leading-tight">
                 {company.company}
               </span>
 
               {company.current && (
-                <span className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-green-100 dark:bg-green-900/30 text-xs text-gray-700 dark:text-green-300">
+                <span className="flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-green-100 dark:bg-green-900/30 text-xs text-gray-700 dark:text-green-300 shrink-0">
                   <span className="relative flex w-1.5 h-1.5 shrink-0">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
                     <span className="relative inline-flex w-1.5 h-1.5 rounded-full bg-green-500" />
@@ -251,15 +280,15 @@ const Experience = () => {
               )}
             </div>
 
-            <div>
-              <span className="text-xs">{company.location}</span>
-            </div>
+            <span className="text-xs text-gray-400 dark:text-neutral-500 shrink-0">
+              {company.location}
+            </span>
           </div>
 
           {/* Roles */}
-          <div className="relative flex flex-col gap-5 mb-5">
+          <div className="relative flex flex-col gap-4 sm:gap-5 mb-5">
             {company.roles.length > 1 && (
-              <span className="absolute left-3.75 top-4 bottom-4 w-px bg-gray-200 dark:bg-neutral-700" />
+              <span className="absolute left-4 top-4 bottom-4 w-px bg-gray-200 dark:bg-neutral-700" />
             )}
             {company.roles.map((role) => (
               <RoleCard

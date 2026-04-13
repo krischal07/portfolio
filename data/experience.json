@@ -4,9 +4,10 @@
       "id": "samparka",
       "company": "Samparka Digital Loyalty",
       "logoIcon": "code",
-          "location":"Kathmandu, Nepal",
-
-      "logoBg": "bg-gray-900",
+      "logoPathLight": "/logo/samparka_light.png",
+      "logoPathDark": "/logo/samparka_dark.png",
+      "location": "Kathmandu, Nepal",
+      "logoBg": "bg-white dark:bg-neutral-900",
       "current": true,
       "roles": [
         {
@@ -17,11 +18,15 @@
           "startDate": "2025-08",
           "endDate": null,
           "technologies": [
-            { "name": "Next.js",      "icon": "nextjs",      "color": "#000000" },
-            { "name": "TypeScript",   "icon": "typescript",  "color": "#3178C6" },
-            { "name": "Tailwind CSS", "icon": "tailwindcss", "color": "#06B6D4" },
-            { "name": "Node.js",      "icon": "nodejs",      "color": "#339933" },
-            { "name": "MongoDB",   "icon": "mongodb",  "color": "#228B22" }
+            { "name": "Next.js", "icon": "nextjs", "color": "#000000" },
+            { "name": "TypeScript", "icon": "typescript", "color": "#3178C6" },
+            {
+              "name": "Tailwind CSS",
+              "icon": "tailwindcss",
+              "color": "#06B6D4"
+            },
+            { "name": "Node.js", "icon": "nodejs", "color": "#339933" },
+            { "name": "MongoDB", "icon": "mongodb", "color": "#228B22" }
           ],
           "whatIDid": [
             "Build and maintain full-stack features across the loyalty platform.",
@@ -35,22 +40,42 @@
       "id": "upasthit",
       "company": "Upasthit",
       "logoIcon": "bulb",
-      "location":"Kathmandu, Nepal",
-      "logoBg": "bg-gray-900",
+      "logoPath": "/logo/upasthit_logo.png",
+      "location": "Kathmandu, Nepal",
+      "logoBg": "bg-white dark:bg-neutral-900",
       "current": true,
       "roles": [
+        {
+          "id": "upasthit-design-engineer",
+          "title": "Design Engineer",
+          "icon": "code",
+          "type": "Part-time",
+          "startDate": "2026-03",
+          "endDate": null,
+          "technologies": [
+            { "name": "Figma", "icon": "figma", "color": "#F24E1E" },
+            { "name": "Next.js", "icon": "nextjs", "color": "#000000" },
+            { "name": "React", "icon": "react", "color": "#61DAFB" },
+            { "name": "Tailwind CSS", "icon": "tailwindcss", "color": "#06B6D4" }
+          ],
+          "whatIDid": [
+            "Design and build the UI/UX for the platform, bridging design and engineering.",
+            "Create reusable component systems and maintain design consistency across the product."
+          ],
+          "defaultExpanded": false
+        },
         {
           "id": "upasthit-founder",
           "title": "Founder",
           "icon": "bulb",
           "type": "Part-time",
-          "startDate": "2024-01",
+          "startDate": "2026-03",
           "endDate": null,
           "technologies": [
-            { "name": "Next.js",  "icon": "nextjs",  "color": "#000000" },
-            { "name": "React",    "icon": "react",   "color": "#61DAFB" },
-            { "name": "MongoDB",  "icon": "mongodb", "color": "#47A248" },
-            { "name": "Docker",   "icon": "docker",  "color": "#2496ED" }
+            { "name": "Next.js", "icon": "nextjs", "color": "#000000" },
+            { "name": "React", "icon": "react", "color": "#61DAFB" },
+            { "name": "MongoDB", "icon": "mongodb", "color": "#47A248" },
+            { "name": "Docker", "icon": "docker", "color": "#2496ED" }
           ],
           "whatIDid": [
             "Lead product vision, design, and engineering for the platform.",
