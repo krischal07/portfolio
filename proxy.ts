@@ -1,0 +1,25 @@
+import { NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
+
+export function proxy(request: NextRequest) {
+  const { pathname } = request.nextUrl
+
+  if (pathname.startsWith('/admin') && pathname !== '/admin/login') {
+    // Check both dev and prod (HTTPS) cookie names
+    const sessionCookie =
+      request.cookies.get('better-auth.session_token') ??
+      request.cookies.get('__Secure-better-auth.session_token')
+
+    if (!sessionCookie) {
+      const loginUrl = new URL('/admin/login', request.url)
+      loginUrl.searchParams.set('callbackUrl', pathname)
+      return NextResponse.redirect(loginUrl)
+    }
+  }
+
+  return NextResponse.next()
+}
+
+export const config = {
+  matcher: ['/admin/:path*'],
+}

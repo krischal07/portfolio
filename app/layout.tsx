@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
+import NavbarWrapper from "@/components/NavbarWrapper";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -87,7 +87,7 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: `(function(){try{var t=localStorage.getItem('theme')||(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');if(t==='dark')document.documentElement.classList.add('dark')}catch(e){}})()` }} />
       </head>
       <body className="min-h-full flex flex-col">
-        <Navbar />
+        <NavbarWrapper />
         {children}
       </body>
     </html>
