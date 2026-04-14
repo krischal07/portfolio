@@ -26,7 +26,7 @@ import {
   SiBun,
 } from "react-icons/si";
 import type { IconType } from "react-icons";
-import experienceData from "@/data/experience.json";
+import type { ExperienceItem, ExperienceRole } from "@/lib/experience";
 
 // ── Role icon map ──────────────────────────────────────────────
 const ROLE_ICON_MAP: Record<string, IconType> = {
@@ -119,14 +119,12 @@ function CompanyLogo({
 }
 
 // ── Role card ──────────────────────────────────────────────────
-type Role = (typeof experienceData.experiences)[0]["roles"][0];
-
 function RoleCard({
   role,
   expanded,
   onToggle,
 }: {
-  role: Role;
+  role: ExperienceRole;
   expanded: boolean;
   onToggle: () => void;
 }) {
@@ -222,11 +220,11 @@ function RoleCard({
 }
 
 // ── Main component ─────────────────────────────────────────────
-const Experience = () => {
+const Experience = ({ items }: { items: ExperienceItem[] }) => {
   const [expanded, setExpanded] = useState<Set<string>>(
     () =>
       new Set(
-        experienceData.experiences
+        items
           .flatMap((c) => c.roles)
           .filter((r) => r.defaultExpanded)
           .map((r) => r.id),
@@ -236,7 +234,11 @@ const Experience = () => {
   const toggle = (id: string) =>
     setExpanded((prev) => {
       const next = new Set(prev);
-      next.has(id) ? next.delete(id) : next.add(id);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
       return next;
     });
 
@@ -246,7 +248,7 @@ const Experience = () => {
         Experience
       </h2>
 
-      {experienceData.experiences.map((company, idx) => (
+      {items.map((company, idx) => (
         <div
           key={company.id}
           className={

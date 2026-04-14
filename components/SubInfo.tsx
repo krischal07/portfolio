@@ -12,7 +12,7 @@ import {
   IoMaleOutline,
 } from 'react-icons/io5'
 import type { IconType } from 'react-icons'
-import subinfoData from '@/data/subinfo.json'
+import { type SubInfoItem } from '@/lib/sub-info'
 
 // ── Icon map ───────────────────────────────────────────────────
 const ICON_MAP: Record<string, IconType> = {
@@ -63,14 +63,20 @@ function IconBox({ children }: { children: React.ReactNode }) {
 }
 
 // ── Component ──────────────────────────────────────────────────
-const SubInfo = () => {
-  const { time, offset } = useLocalTime(subinfoData.tzOffset)
+type SubInfoProps = {
+  tzOffset: number
+  info: SubInfoItem[]
+}
+
+const SubInfo = ({ tzOffset, info }: SubInfoProps) => {
+  const { time } = useLocalTime(tzOffset)
 
   return (
     <section className="flex flex-col gap-6 py-2">
       <div className="grid grid-cols-1 gap-x-6 gap-y-3 sm:grid-cols-2">
-        {subinfoData.info.map((item) => {
+        {info.map((item, index) => {
           const Icon = ICON_MAP[item.icon]
+          if (!Icon) return null
 
           const content =
             item.icon === 'time' ? (
@@ -91,7 +97,7 @@ const SubInfo = () => {
 
           return (
             <div
-              key={item.icon}
+              key={`${item.icon}-${index}`}
               className={item.fullWidth ? 'sm:col-span-2' : ''}
             >
               <div className="flex items-center gap-3">

@@ -1,9 +1,9 @@
 import { FiArrowUpRight } from 'react-icons/fi'
-import { FaXTwitter, FaGithub, FaLinkedin, FaDiscord, FaYoutube, FaInstagram } from 'react-icons/fa6'
+import { FaXTwitter, FaGithub, FaLinkedin, FaYoutube } from 'react-icons/fa6'
 import { SiDailydotdev } from 'react-icons/si'
 import type { IconType } from 'react-icons'
-import socialsData from '@/data/socials.json'
 import { BsInstagram } from 'react-icons/bs'
+import { getSocialLinksSafe } from '@/lib/social-links-db'
 
 // ── Icon map ───────────────────────────────────────────────────
 const ICON_MAP: Record<string, IconType> = {
@@ -15,11 +15,13 @@ const ICON_MAP: Record<string, IconType> = {
   youtube:  FaYoutube,
 }
 
-const SocialMediaHandles = () => {
+const SocialMediaHandles = async () => {
+  const socialLinks = await getSocialLinksSafe()
+
   return (
     <div className="border-t border-gray-200 dark:border-neutral-800">
       <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3">
-        {socialsData.socials.map((social) => {
+        {socialLinks.items.map((social) => {
           const Icon = ICON_MAP[social.icon] ?? FaXTwitter
           return (
             <a

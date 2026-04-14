@@ -1,0 +1,93 @@
+CREATE TABLE "experience_settings" (
+	"id" text PRIMARY KEY NOT NULL,
+	"items" jsonb DEFAULT '[]'::jsonb NOT NULL,
+	"updated_at" timestamp DEFAULT now() NOT NULL
+);
+
+INSERT INTO "experience_settings" ("id", "items") VALUES (
+	'main',
+	'[
+	  {
+	    "id":"samparka",
+	    "company":"Samparka Digital Loyalty",
+	    "logoIcon":"code",
+	    "logoPathLight":"/logo/samparka_light.png",
+	    "logoPathDark":"/logo/samparka_dark.png",
+	    "location":"Kathmandu, Nepal",
+	    "logoBg":"bg-white dark:bg-neutral-900",
+	    "current":true,
+	    "roles":[
+	      {
+	        "id":"samparka-se",
+	        "title":"Software Engineer",
+	        "icon":"code",
+	        "type":"Full-time",
+	        "startDate":"2025-08",
+	        "endDate":null,
+	        "technologies":[
+	          {"name":"Next.js","icon":"nextjs","color":"#000000"},
+	          {"name":"TypeScript","icon":"typescript","color":"#3178C6"},
+	          {"name":"Tailwind CSS","icon":"tailwindcss","color":"#06B6D4"},
+	          {"name":"Node.js","icon":"nodejs","color":"#339933"},
+	          {"name":"MongoDB","icon":"mongodb","color":"#228B22"}
+	        ],
+	        "whatIDid":[
+	          "Build and maintain full-stack features across the loyalty platform.",
+	          "Collaborate with the design team to ship production-ready components."
+	        ],
+	        "defaultExpanded":true
+	      }
+	    ]
+	  },
+	  {
+	    "id":"upasthit",
+	    "company":"Upasthit",
+	    "logoIcon":"bulb",
+	    "logoPath":"/logo/upasthit_logo.png",
+	    "location":"Kathmandu, Nepal",
+	    "logoBg":"bg-white dark:bg-neutral-900",
+	    "current":true,
+	    "roles":[
+	      {
+	        "id":"upasthit-design-engineer",
+	        "title":"Design Engineer",
+	        "icon":"code",
+	        "type":"Part-time",
+	        "startDate":"2026-03",
+	        "endDate":null,
+	        "technologies":[
+	          {"name":"Figma","icon":"figma","color":"#F24E1E"},
+	          {"name":"Next.js","icon":"nextjs","color":"#000000"},
+	          {"name":"React","icon":"react","color":"#61DAFB"},
+	          {"name":"Tailwind CSS","icon":"tailwindcss","color":"#06B6D4"}
+	        ],
+	        "whatIDid":[
+	          "Design and build the UI/UX for the platform, bridging design and engineering.",
+	          "Create reusable component systems and maintain design consistency across the product."
+	        ],
+	        "defaultExpanded":false
+	      },
+	      {
+	        "id":"upasthit-founder",
+	        "title":"Co-Founder",
+	        "icon":"bulb",
+	        "type":"Part-time",
+	        "startDate":"2026-03",
+	        "endDate":null,
+	        "technologies":[
+	          {"name":"Next.js","icon":"nextjs","color":"#000000"},
+	          {"name":"React","icon":"react","color":"#61DAFB"},
+	          {"name":"MongoDB","icon":"mongodb","color":"#47A248"},
+	          {"name":"Docker","icon":"docker","color":"#2496ED"}
+	        ],
+	        "whatIDid":[
+	          "Lead product vision, design, and engineering for the platform.",
+	          "Manage business operations, team coordination, and stakeholder communication."
+	        ],
+	        "defaultExpanded":false
+	      }
+	    ]
+	  }
+	]'::jsonb
+)
+ON CONFLICT ("id") DO NOTHING;

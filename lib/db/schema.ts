@@ -80,6 +80,71 @@ export const project = pgTable('projects', {
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
 })
 
+export const headerInformation = pgTable('header_information', {
+  id: text('id').primaryKey(),
+  name: text('name').notNull(),
+  tagline: text('tagline').notNull(),
+  bio1: text('bio_1').notNull(),
+  bio2: text('bio_2').notNull(),
+  bio3: text('bio_3').notNull(),
+  bioHtml: text('bio_html').notNull().default(''),
+  email: text('email').notNull(),
+  avatarLight: text('avatar_light').notNull(),
+  avatarDark: text('avatar_dark').notNull(),
+  updatedAt: timestamp('updated_at').notNull().defaultNow(),
+})
+
+export const subInfoSettings = pgTable('sub_info_settings', {
+  id: text('id').primaryKey(),
+  tzOffset: real('tz_offset').notNull().default(0),
+  items: jsonb('items')
+    .$type<Array<{ icon: string; label: string | null; highlight: string | null; fullWidth: boolean }>>()
+    .notNull()
+    .default([]),
+  updatedAt: timestamp('updated_at').notNull().defaultNow(),
+})
+
+export const socialLinksSettings = pgTable('social_links_settings', {
+  id: text('id').primaryKey(),
+  items: jsonb('items')
+    .$type<Array<{ name: string; icon: string; bg: string; url: string }>>()
+    .notNull()
+    .default([]),
+  updatedAt: timestamp('updated_at').notNull().defaultNow(),
+})
+
+export const experienceSettings = pgTable('experience_settings', {
+  id: text('id').primaryKey(),
+  items: jsonb('items')
+    .$type<
+      Array<{
+        id: string
+        company: string
+        logoIcon: string
+        logoPath?: string
+        logoPathLight?: string
+        logoPathDark?: string
+        location: string
+        logoBg: string
+        current: boolean
+        roles: Array<{
+          id: string
+          title: string
+          icon: string
+          type: string
+          startDate: string
+          endDate: string | null
+          technologies: Array<{ name: string; icon: string; color: string }>
+          whatIDid: string[]
+          defaultExpanded: boolean
+        }>
+      }>
+    >()
+    .notNull()
+    .default([]),
+  updatedAt: timestamp('updated_at').notNull().defaultNow(),
+})
+
 // ── Canvas tables ───────────────────────────────────────────────────────────
 
 export const projectNode = pgTable('project_nodes', {

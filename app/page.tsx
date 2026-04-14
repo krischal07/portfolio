@@ -4,6 +4,8 @@ import GithubActivity from '@/components/GithubActivity'
 import Header from '@/components/Header'
 import SocialMediaHandles from '@/components/SocialMediaHandles'
 import SubInfo from '@/components/SubInfo'
+import { getExperienceSafe } from '@/lib/experience-db'
+import { getSubInfoSafe } from '@/lib/sub-info-db'
 
 export const metadata: Metadata = {
   title: {
@@ -19,14 +21,17 @@ export const metadata: Metadata = {
   },
 };
 
-const Home = () => {
+const Home = async () => {
+  const experience = await getExperienceSafe()
+  const subInfo = await getSubInfoSafe()
+
   return (
     <div className='mx-auto md:max-w-3xl *:[[id]]:scroll-mt-22 min-h-screen w-full px-4 '>
       <Header />
-      <SubInfo />
+      <SubInfo tzOffset={subInfo.tzOffset} info={subInfo.items} />
       <SocialMediaHandles/>
       <GithubActivity/>
-      <Experience/>
+      <Experience items={experience.items} />
     </div>
   )
 }

@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { FiGrid, FiFileText, FiFolder, FiLogOut, FiLayers } from 'react-icons/fi'
+import { FiGrid, FiFileText, FiFolder, FiLogOut, FiLayers, FiInfo } from 'react-icons/fi'
 import { useRouter } from 'next/navigation'
 import { signOut } from '@/lib/auth-client'
 
@@ -19,6 +19,7 @@ const contentItems = [
   { label: 'Blog Posts', href: '/admin/blog', icon: FiFileText },
   { label: 'Projects', href: '/admin/projects', icon: FiFolder, exclude: '/admin/projects/canvas' },
   { label: 'Canvas Editor', href: '/admin/projects/canvas', icon: FiLayers, exact: true },
+  { label: 'Information', href: '/admin/information', icon: FiInfo, exact: true },
 ]
 
 export default function AdminSidebar({ userName, userEmail }: Props) {

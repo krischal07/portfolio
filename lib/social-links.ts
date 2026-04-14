@@ -1,0 +1,33 @@
+export const SOCIAL_LINKS_ID = 'main'
+
+export type SocialLinkItem = {
+  name: string
+  icon: string
+  bg: string
+  url: string
+}
+
+export type SocialLinksValues = {
+  items: SocialLinkItem[]
+}
+
+export const SOCIAL_LINKS_DEFAULTS: SocialLinksValues = {
+  items: [
+    { name: 'X', icon: 'x', bg: 'bg-black', url: 'https://x.com/hwrCodes' },
+    { name: 'GitHub', icon: 'github', bg: 'bg-gray-900', url: 'https://github.com/krischal07' },
+    {
+      name: 'LinkedIn',
+      icon: 'linkedin',
+      bg: 'bg-blue-600',
+      url: 'https://www.linkedin.com/in/krischal-shrestha-b74669230/',
+    },
+    { name: 'daily.dev', icon: 'dailydev', bg: 'bg-gray-950', url: 'https://app.daily.dev/username' },
+    {
+      name: 'Instagram',
+      icon: 'instagram',
+      bg: 'bg-[#ee2a7b]',
+      url: 'https://www.instagram.com/krischal_shrestha/',
+    },
+    { name: 'YouTube', icon: 'youtube', bg: 'bg-red-600', url: 'https://youtube.com/@username' },
+  ],
+}
