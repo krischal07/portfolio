@@ -316,6 +316,13 @@ export default function CanvasPreviewModal({ nodes, edges, onClose, onNodesChang
     }))
   }
 
+  function handleDeviceEdgeDelete(device: Device, edgeId: string) {
+    setDeviceEdges((prev) => ({
+      ...prev,
+      [device]: prev[device].filter((e) => e.id !== edgeId),
+    }))
+  }
+
   // Node content edit — updates ALL devices + propagates to main editor
   function handleNodeUpdate(updated: RFNodeData) {
     const patchData = (arr: RFNode[]) =>
@@ -469,6 +476,7 @@ export default function CanvasPreviewModal({ nodes, edges, onClose, onNodesChang
                     draggable={editMode}
                     onNodesChange={(changes) => handleDeviceNodesChange('mobile', changes)}
                     onEdgeUpdate={(id, label, type) => handleDeviceEdgeUpdate('mobile', id, label, type)}
+                    onEdgeDelete={(id) => handleDeviceEdgeDelete('mobile', id)}
                     onNodeClick={handleNodeClick}
                   />
                 </div>
@@ -492,6 +500,7 @@ export default function CanvasPreviewModal({ nodes, edges, onClose, onNodesChang
                       draggable={editMode}
                       onNodesChange={(changes) => handleDeviceNodesChange('tablet', changes)}
                       onEdgeUpdate={(id, label, type) => handleDeviceEdgeUpdate('tablet', id, label, type)}
+                      onEdgeDelete={(id) => handleDeviceEdgeDelete('tablet', id)}
                       onNodeClick={handleNodeClick}
                     />
                   </div>
@@ -502,20 +511,19 @@ export default function CanvasPreviewModal({ nodes, edges, onClose, onNodesChang
 
           {/* Desktop */}
           {activeDevice === 'desktop' && (
-            <div className="flex flex-col items-center gap-3 w-full max-w-[1280px]">
-              <span className="text-xs text-gray-400 dark:text-neutral-500">Desktop — 1280px</span>
+            <div className="flex flex-col items-center gap-3 w-full md:max-w-3xl">
+              <span className="text-xs text-gray-400 dark:text-neutral-500">Desktop — md:max-w-3xl</span>
               <div className="rounded-2xl border-[6px] border-gray-300 dark:border-neutral-600 shadow-2xl overflow-hidden bg-white dark:bg-neutral-900 w-full">
-                <div className="overflow-x-auto w-full">
-                  <div style={{ width: layouts.canvasWidth, height: layouts.canvasHeight }}>
+                <div className="w-full" style={{ height: layouts.canvasHeight }}>
                     <CanvasPreviewInteractive
                       nodes={deviceNodes.desktop}
                       edges={deviceEdges.desktop}
                       draggable={editMode}
                       onNodesChange={(changes) => handleDeviceNodesChange('desktop', changes)}
                       onEdgeUpdate={(id, label, type) => handleDeviceEdgeUpdate('desktop', id, label, type)}
+                      onEdgeDelete={(id) => handleDeviceEdgeDelete('desktop', id)}
                       onNodeClick={handleNodeClick}
                     />
-                  </div>
                 </div>
               </div>
             </div>

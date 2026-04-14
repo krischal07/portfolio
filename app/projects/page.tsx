@@ -7,9 +7,8 @@ import type { RFNode, RFEdge } from '@/components/canvas/ProjectCanvas'
 import ProjectsViewCanvasLoader from '@/components/canvas/ProjectsViewCanvasLoader'
 import MobileProjectsCanvas from '@/components/canvas/MobileProjectsCanvas'
 
-const NODE_WIDTH = 220
 const NODE_HEIGHT = 190
-const CANVAS_PADDING = 80
+const CANVAS_PADDING = 24
 const MOBILE_CANVAS_WIDTH = 360
 const MOBILE_CANVAS_PADDING = 14
 const MOBILE_NODE_WIDTH = 184
@@ -105,9 +104,7 @@ export default async function ProjectsPage() {
     },
   }))
 
-  const maxX = Math.max(...rfNodes.map((n) => n.position.x + NODE_WIDTH))
   const maxY = Math.max(...rfNodes.map((n) => n.position.y + NODE_HEIGHT))
-  const canvasWidth = Math.max(760, Math.ceil(maxX + CANVAS_PADDING))
   const canvasHeight = Math.max(560, Math.ceil(maxY + CANVAS_PADDING))
 
   const mobileMaxX = Math.max(...mobileNodes.map((n) => n.position.x + MOBILE_NODE_WIDTH))
@@ -133,8 +130,8 @@ export default async function ProjectsPage() {
         />
       </div>
 
-      <div className="hidden md:block w-full overflow-x-auto">
-        <div style={{ width: canvasWidth, height: canvasHeight }}>
+      <div className="hidden md:block w-full ">
+        <div className="w-full" style={{ height: canvasHeight }}>    
           <ProjectsViewCanvasLoader nodes={rfNodes} edges={rfEdges} />
         </div>
       </div>

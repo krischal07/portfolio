@@ -27,7 +27,7 @@ import NodeEditPanel from './NodeEditPanel'
 import CanvasToolbar from './CanvasToolbar'
 import CanvasPreviewModal from './CanvasPreviewModal'
 import type { CanvasNodeData, CanvasEdgeData, RFNodeData } from '@/lib/canvas-types'
-import { IoCloseOutline } from 'react-icons/io5'
+import { IoCloseOutline, IoTrashOutline } from 'react-icons/io5'
 
 // Define node/edge types outside component for stable reference
 const nodeTypes: NodeTypes = { journeyNode: CanvasNodeCard }
@@ -123,6 +123,73 @@ function CanvasInner({ initialNodes, initialEdges }: ProjectCanvasProps) {
       eds.filter((e) => e.source !== selectedNodeId && e.target !== selectedNodeId)
     )
     setSelectedNodeId(null)
+  }
+
+  function handleDuplicateNode() {
+    if (!selectedNodeId) return
+    const sourceNode = nodes.find((n) => n.id === selectedNodeId)
+    if (!sourceNode) return
+
+    const newId = crypto.randomUUID()
+    const duplicated: RFNode = {
+      ...sourceNode,
+      id: newId,
+      position: {
+        x: sourceNode.position.x + 40,
+        y: sourceNode.position.y + 40,
+      },
+      data: {
+        ...sourceNode.data,
+        id: newId,
+        title: `${sourceNode.data.title} Copy`,
+        editorMode: true,
+      },
+    }
+
+    setNodes((nds) => [...nds, duplicated])
+    setSelectedNodeId(newId)
+    setSelectedEdgeId(null)
+  }
+
+  function handleNudgeNode(dx: number, dy: number) {
+    if (!selectedNodeId) return
+    setNodes((nds) =>
+      nds.map((n) =>
+        n.id === selectedNodeId
+          ? {
+              ...n,
+              position: {
+                x: n.position.x + dx,
+                y: n.position.y + dy,
+              },
+            }
+          : n
+      )
+    )
+  }
+
+  function handleResetNodeStyle() {
+    if (!selectedNodeId) return
+    setNodes((nds) =>
+      nds.map((n) =>
+        n.id === selectedNodeId
+          ? {
+              ...n,
+              data: {
+                ...n.data,
+                iconColor: '#ffffff',
+                iconBgColor: '#3b82f6',
+              },
+            }
+          : n
+      )
+    )
+  }
+
+  function handleDeleteEdge() {
+    if (!selectedEdgeId) return
+    setEdges((eds) => eds.filter((e) => e.id !== selectedEdgeId))
+    setSelectedEdgeId(null)
   }
 
   function handleAddNode() {
@@ -308,6 +375,15 @@ function CanvasInner({ initialNodes, initialEdges }: ProjectCanvasProps) {
             ))}
           </div>
           <button
+            type="button"
+            onClick={handleDeleteEdge}
+            className="inline-flex items-center gap-1 px-2 py-1 rounded text-[10px] font-semibold text-red-500 border border-red-200 dark:border-red-900/50 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+          >
+            <IoTrashOutline size={12} />
+            Remove Arrow
+          </button>
+          <button
+            type="button"
             onClick={() => setSelectedEdgeId(null)}
             className="text-gray-400 hover:text-gray-700 dark:hover:text-white"
           >
@@ -321,6 +397,9 @@ function CanvasInner({ initialNodes, initialEdges }: ProjectCanvasProps) {
         node={selectedNode}
         onUpdate={handleNodeUpdate}
         onDelete={handleNodeDelete}
+        onDuplicate={handleDuplicateNode}
+        onNudge={handleNudgeNode}
+        onResetStyle={handleResetNodeStyle}
         onClose={() => setSelectedNodeId(null)}
       />
 

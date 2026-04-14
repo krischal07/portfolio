@@ -75,7 +75,7 @@ export default function CanvasToolbar({ onAddNode, onSave, onPreview, saving, sa
       <div className="w-px h-4 bg-gray-200 dark:bg-neutral-700" />
 
       <span className="text-[10px] text-gray-400 dark:text-neutral-500">
-        Click node to edit · Drag to reposition · Connect handles to link
+        Click node to edit · Click arrow to edit/remove · Duplicate, nudge, reset style
       </span>
     </div>
   )

@@ -5,7 +5,6 @@ import {
   ReactFlow,
   ReactFlowProvider,
   MarkerType,
-  applyNodeChanges,
   type NodeTypes,
   type EdgeTypes,
   type NodeChange,
@@ -13,7 +12,7 @@ import {
   type Edge,
 } from '@xyflow/react'
 import '@xyflow/react/dist/style.css'
-import { IoCloseOutline } from 'react-icons/io5'
+import { IoCloseOutline, IoTrashOutline } from 'react-icons/io5'
 
 import CanvasNodeCard from './CanvasNodeCard'
 import CanvasEdgeLabel from './CanvasEdgeLabel'
@@ -29,6 +28,7 @@ interface CanvasPreviewInteractiveProps {
   draggable?: boolean
   onNodesChange: (changes: NodeChange[]) => void
   onEdgeUpdate: (edgeId: string, label: string, labelType: 'time' | 'action') => void
+  onEdgeDelete: (edgeId: string) => void
   onNodeClick: (nodeId: string) => void
 }
 
@@ -45,9 +45,11 @@ function PreviewCanvasInner({
   draggable,
   onNodesChange,
   onEdgeUpdate,
+  onEdgeDelete,
   onNodeClick,
 }: CanvasPreviewInteractiveProps) {
   const zoom = scale ?? 1
+  const isFixedZoom = scale != null
 
   const [edgeDraft, setEdgeDraft] = useState<EdgeDraft | null>(null)
 
@@ -98,6 +100,8 @@ function PreviewCanvasInner({
         edgeTypes={edgeTypes}
         nodes={nodes}
         edges={edges}
+        fitView
+        fitViewOptions={{ padding: 0.12, minZoom: 0.35, maxZoom: isFixedZoom ? zoom : 1 }}
         defaultEdgeOptions={{
           type: 'journeyEdge',
           markerEnd: { type: MarkerType.ArrowClosed, color: '#64748b' },
@@ -116,9 +120,8 @@ function PreviewCanvasInner({
         zoomOnPinch={false}
         zoomOnDoubleClick={false}
         preventScrolling={false}
-        defaultViewport={{ x: 0, y: 0, zoom }}
-        minZoom={zoom}
-        maxZoom={zoom}
+        minZoom={isFixedZoom ? zoom : 0.35}
+        maxZoom={isFixedZoom ? zoom : 1}
         proOptions={{ hideAttribution: true }}
         className="rounded-2xl"
       />
@@ -159,6 +162,18 @@ function PreviewCanvasInner({
             ))}
           </div>
           <button
+            type="button"
+            onClick={() => {
+              onEdgeDelete(edgeDraft.id)
+              setEdgeDraft(null)
+            }}
+            className="inline-flex items-center gap-1 px-2 py-1 rounded text-[10px] font-semibold text-red-500 border border-red-200 dark:border-red-900/50 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+          >
+            <IoTrashOutline size={12} />
+            Remove Arrow
+          </button>
+          <button
+            type="button"
             onClick={() => setEdgeDraft(null)}
             className="text-gray-400 hover:text-gray-700 dark:hover:text-white"
           >

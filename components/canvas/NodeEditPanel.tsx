@@ -1,6 +1,5 @@
 'use client'
 
-import { useEffect, useState } from 'react'
 import { IoCloseOutline, IoTrashOutline } from 'react-icons/io5'
 import IconSelector from './IconSelector'
 import TechStackSelector from './TechStackSelector'
@@ -11,24 +10,27 @@ interface NodeEditPanelProps {
   onUpdate: (updated: RFNodeData) => void
   onDelete: () => void
   onClose: () => void
+  onDuplicate?: () => void
+  onNudge?: (dx: number, dy: number) => void
+  onResetStyle?: () => void
 }
 
-export default function NodeEditPanel({ node, onUpdate, onDelete, onClose }: NodeEditPanelProps) {
-  const [form, setForm] = useState<RFNodeData | null>(null)
-
-  // Sync form state when selected node changes
-  useEffect(() => {
-    setForm(node ? { ...node } : null)
-  }, [node?.id])
-
+export default function NodeEditPanel({
+  node,
+  onUpdate,
+  onDelete,
+  onClose,
+  onDuplicate,
+  onNudge,
+  onResetStyle,
+}: NodeEditPanelProps) {
   function patch<K extends keyof RFNodeData>(key: K, value: RFNodeData[K]) {
-    if (!form) return
-    const updated = { ...form, [key]: value }
-    setForm(updated)
+    if (!node) return
+    const updated = { ...node, [key]: value }
     onUpdate(updated)
   }
 
-  const visible = !!form
+  const visible = !!node
 
   return (
     <div
@@ -37,7 +39,7 @@ export default function NodeEditPanel({ node, onUpdate, onDelete, onClose }: Nod
         visible ? 'translate-x-0' : 'translate-x-full',
       ].join(' ')}
     >
-      {form && (
+      {node && (
         <>
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 dark:border-neutral-800 shrink-0">
@@ -65,7 +67,7 @@ export default function NodeEditPanel({ node, onUpdate, onDelete, onClose }: Nod
                     onClick={() => patch('nodeType', t)}
                     className={[
                       'flex-1 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all border',
-                      form.nodeType === t
+                      node.nodeType === t
                         ? t === 'milestone'
                           ? 'bg-teal-500 text-white border-transparent'
                           : 'bg-purple-500 text-white border-transparent'
@@ -85,7 +87,7 @@ export default function NodeEditPanel({ node, onUpdate, onDelete, onClose }: Nod
               </label>
               <input
                 type="text"
-                value={form.title}
+                value={node.title}
                 onChange={(e) => patch('title', e.target.value)}
                 className="w-full text-sm px-3 py-2 rounded-lg border border-gray-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
                 placeholder="Node title"
@@ -99,7 +101,7 @@ export default function NodeEditPanel({ node, onUpdate, onDelete, onClose }: Nod
               </label>
               <input
                 type="text"
-                value={form.category}
+                value={node.category}
                 onChange={(e) => patch('category', e.target.value.toUpperCase())}
                 className="w-full text-sm px-3 py-2 rounded-lg border border-gray-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500/30 uppercase tracking-wider"
                 placeholder="PROJECT"
@@ -112,7 +114,7 @@ export default function NodeEditPanel({ node, onUpdate, onDelete, onClose }: Nod
                 Description
               </label>
               <textarea
-                value={form.description}
+                value={node.description}
                 onChange={(e) => patch('description', e.target.value)}
                 rows={3}
                 className="w-full text-sm px-3 py-2 rounded-lg border border-gray-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500/30 resize-none"
@@ -126,7 +128,7 @@ export default function NodeEditPanel({ node, onUpdate, onDelete, onClose }: Nod
                 Icon
               </label>
               <IconSelector
-                value={form.iconName}
+                value={node.iconName}
                 onChange={(name) => patch('iconName', name)}
               />
             </div>
@@ -140,12 +142,12 @@ export default function NodeEditPanel({ node, onUpdate, onDelete, onClose }: Nod
                 <div className="flex items-center gap-2">
                   <input
                     type="color"
-                    value={form.iconColor}
+                    value={node.iconColor}
                     onChange={(e) => patch('iconColor', e.target.value)}
                     className="w-8 h-8 rounded cursor-pointer border border-gray-200 dark:border-neutral-700"
                   />
                   <span className="text-xs text-gray-500 dark:text-neutral-400 font-mono">
-                    {form.iconColor}
+                    {node.iconColor}
                   </span>
                 </div>
               </div>
@@ -156,16 +158,57 @@ export default function NodeEditPanel({ node, onUpdate, onDelete, onClose }: Nod
                 <div className="flex items-center gap-2">
                   <input
                     type="color"
-                    value={form.iconBgColor}
+                    value={node.iconBgColor}
                     onChange={(e) => patch('iconBgColor', e.target.value)}
                     className="w-8 h-8 rounded cursor-pointer border border-gray-200 dark:border-neutral-700"
                   />
                   <span className="text-xs text-gray-500 dark:text-neutral-400 font-mono">
-                    {form.iconBgColor}
+                    {node.iconBgColor}
                   </span>
                 </div>
               </div>
             </div>
+
+            {/* Position */}
+            {onNudge && (
+              <div>
+                <label className="block text-[10px] font-semibold uppercase tracking-widest text-gray-400 mb-1.5">
+                  Position
+                </label>
+                <div className="grid grid-cols-3 gap-1.5 w-28">
+                  <div />
+                  <button
+                    type="button"
+                    onClick={() => onNudge(0, -20)}
+                    className="px-2 py-1 rounded-md text-xs font-semibold bg-gray-100 dark:bg-neutral-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-neutral-700"
+                  >
+                    Up
+                  </button>
+                  <div />
+                  <button
+                    type="button"
+                    onClick={() => onNudge(-20, 0)}
+                    className="px-2 py-1 rounded-md text-xs font-semibold bg-gray-100 dark:bg-neutral-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-neutral-700"
+                  >
+                    Left
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => onNudge(0, 20)}
+                    className="px-2 py-1 rounded-md text-xs font-semibold bg-gray-100 dark:bg-neutral-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-neutral-700"
+                  >
+                    Down
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => onNudge(20, 0)}
+                    className="px-2 py-1 rounded-md text-xs font-semibold bg-gray-100 dark:bg-neutral-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-neutral-700"
+                  >
+                    Right
+                  </button>
+                </div>
+              </div>
+            )}
 
             {/* Tech stack */}
             <div>
@@ -173,7 +216,7 @@ export default function NodeEditPanel({ node, onUpdate, onDelete, onClose }: Nod
                 Tech Stack
               </label>
               <TechStackSelector
-                value={form.techStack}
+                value={node.techStack}
                 onChange={(stack) => patch('techStack', stack)}
               />
             </div>
@@ -185,7 +228,7 @@ export default function NodeEditPanel({ node, onUpdate, onDelete, onClose }: Nod
               </label>
               <input
                 type="text"
-                value={form.date ?? ''}
+                value={node.date ?? ''}
                 onChange={(e) => patch('date', e.target.value || null)}
                 className="w-full text-sm px-3 py-2 rounded-lg border border-gray-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
                 placeholder="Jan 2024"
@@ -199,7 +242,7 @@ export default function NodeEditPanel({ node, onUpdate, onDelete, onClose }: Nod
               </label>
               <input
                 type="url"
-                value={form.githubUrl ?? ''}
+                value={node.githubUrl ?? ''}
                 onChange={(e) => patch('githubUrl', e.target.value || null)}
                 className="w-full text-sm px-3 py-2 rounded-lg border border-gray-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
                 placeholder="https://github.com/..."
@@ -213,7 +256,7 @@ export default function NodeEditPanel({ node, onUpdate, onDelete, onClose }: Nod
               </label>
               <input
                 type="url"
-                value={form.liveUrl ?? ''}
+                value={node.liveUrl ?? ''}
                 onChange={(e) => patch('liveUrl', e.target.value || null)}
                 className="w-full text-sm px-3 py-2 rounded-lg border border-gray-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
                 placeholder="https://..."
@@ -223,6 +266,28 @@ export default function NodeEditPanel({ node, onUpdate, onDelete, onClose }: Nod
 
           {/* Delete button */}
           <div className="p-4 border-t border-gray-100 dark:border-neutral-800 shrink-0">
+            {(onDuplicate || onResetStyle) && (
+              <div className="grid grid-cols-2 gap-2 mb-2">
+                {onDuplicate && (
+                  <button
+                    type="button"
+                    onClick={onDuplicate}
+                    className="w-full py-2 rounded-lg text-xs font-semibold text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-neutral-700 hover:bg-gray-50 dark:hover:bg-neutral-900 transition-colors"
+                  >
+                    Duplicate
+                  </button>
+                )}
+                {onResetStyle && (
+                  <button
+                    type="button"
+                    onClick={onResetStyle}
+                    className="w-full py-2 rounded-lg text-xs font-semibold text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-neutral-700 hover:bg-gray-50 dark:hover:bg-neutral-900 transition-colors"
+                  >
+                    Reset Style
+                  </button>
+                )}
+              </div>
+            )}
             <button
               type="button"
               onClick={onDelete}

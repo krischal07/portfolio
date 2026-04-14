@@ -28,6 +28,8 @@ function ViewCanvasInner({ nodes, edges }: ProjectsViewCanvasProps) {
       edgeTypes={edgeTypes}
       nodes={nodes}
       edges={edges}
+      fitView
+      fitViewOptions={{ padding: 0.01, minZoom: 0.2, maxZoom: 1 }}
       defaultEdgeOptions={{
         type: 'journeyEdge',
         markerEnd: { type: MarkerType.ArrowClosed, color: '#64748b' },
@@ -43,9 +45,8 @@ function ViewCanvasInner({ nodes, edges }: ProjectsViewCanvasProps) {
       zoomOnPinch={false}
       zoomOnDoubleClick={false}
       preventScrolling={false}
-      minZoom={1}
+      minZoom={0.2}
       maxZoom={1}
-      defaultViewport={{ x: 0, y: 0, zoom: 1 }}
       proOptions={{ hideAttribution: true }}
       className="rounded-2xl"
     />

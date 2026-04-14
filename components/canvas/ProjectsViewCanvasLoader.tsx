@@ -20,6 +20,6 @@ interface Props {
   edges: RFEdge[]
 }
 
-export default function ProjectsViewCanvasLoader({ nodes, edges }: Props) {
+export default function  ProjectsViewCanvasLoader({ nodes, edges }: Props) {
   return <ProjectsViewCanvas nodes={nodes} edges={edges} />
 }
