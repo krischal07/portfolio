@@ -54,6 +54,8 @@ export default async function ProjectsPage() {
       githubUrl: n.githubUrl,
       liveUrl: n.liveUrl,
       date: n.date,
+      mobilePositionX: n.mobilePositionX ?? null,
+      mobilePositionY: n.mobilePositionY ?? null,
       editorMode: false,
     },
   }))
@@ -90,10 +92,13 @@ export default async function ProjectsPage() {
 
   const mobileNodes: RFNode[] = rfNodes.map((n) => ({
     ...n,
-    position: {
-      x: (n.position.x - minRfX) * mobileXScale + MOBILE_CANVAS_PADDING,
-      y: (n.position.y - minRfY) * mobileYScale + MOBILE_CANVAS_PADDING,
-    },
+    position:
+      n.data.mobilePositionX != null && n.data.mobilePositionY != null
+        ? { x: n.data.mobilePositionX, y: n.data.mobilePositionY }
+        : {
+            x: (n.position.x - minRfX) * mobileXScale + MOBILE_CANVAS_PADDING,
+            y: (n.position.y - minRfY) * mobileYScale + MOBILE_CANVAS_PADDING,
+          },
     data: {
       ...n.data,
       compactMode: true,
@@ -105,8 +110,9 @@ export default async function ProjectsPage() {
   const canvasWidth = Math.max(760, Math.ceil(maxX + CANVAS_PADDING))
   const canvasHeight = Math.max(560, Math.ceil(maxY + CANVAS_PADDING))
 
+  const mobileMaxX = Math.max(...mobileNodes.map((n) => n.position.x + MOBILE_NODE_WIDTH))
   const mobileMaxY = Math.max(...mobileNodes.map((n) => n.position.y + MOBILE_NODE_HEIGHT))
-  const mobileCanvasWidth = MOBILE_CANVAS_WIDTH
+  const mobileCanvasWidth = Math.max(MOBILE_CANVAS_WIDTH, Math.ceil(mobileMaxX + MOBILE_CANVAS_PADDING))
   const mobileCanvasHeight = Math.max(
     520,
     Math.ceil(mobileMaxY + MOBILE_CANVAS_PADDING + verticalRange * 0.06)

@@ -1,16 +1,17 @@
 'use client'
 
-import { IoAddOutline, IoSaveOutline, IoCheckmarkOutline, IoAlertCircleOutline } from 'react-icons/io5'
+import { IoAddOutline, IoSaveOutline, IoCheckmarkOutline, IoAlertCircleOutline, IoEyeOutline } from 'react-icons/io5'
 
 interface CanvasToolbarProps {
   onAddNode: () => void
   onSave: () => void
+  onPreview: () => void
   saving: boolean
   saved: boolean
   saveError: string | null
 }
 
-export default function CanvasToolbar({ onAddNode, onSave, saving, saved, saveError }: CanvasToolbarProps) {
+export default function CanvasToolbar({ onAddNode, onSave, onPreview, saving, saved, saveError }: CanvasToolbarProps) {
   return (
     <div className="absolute top-3 left-1/2 -translate-x-1/2 z-10 flex items-center gap-2 bg-white dark:bg-neutral-900 border border-gray-200 dark:border-neutral-700 rounded-xl px-3 py-2 shadow-sm">
       <button
@@ -20,6 +21,15 @@ export default function CanvasToolbar({ onAddNode, onSave, saving, saved, saveEr
       >
         <IoAddOutline size={14} />
         Add Node
+      </button>
+
+      <button
+        type="button"
+        onClick={onPreview}
+        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-neutral-800 hover:bg-gray-200 dark:hover:bg-neutral-700 transition-colors"
+      >
+        <IoEyeOutline size={14} />
+        Preview
       </button>
 
       <div className="w-px h-4 bg-gray-200 dark:bg-neutral-700" />

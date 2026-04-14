@@ -25,6 +25,7 @@ import CanvasNodeCard, { type CanvasNodeCardData } from './CanvasNodeCard'
 import CanvasEdgeLabel from './CanvasEdgeLabel'
 import NodeEditPanel from './NodeEditPanel'
 import CanvasToolbar from './CanvasToolbar'
+import CanvasPreviewModal from './CanvasPreviewModal'
 import type { CanvasNodeData, CanvasEdgeData, RFNodeData } from '@/lib/canvas-types'
 import { IoCloseOutline } from 'react-icons/io5'
 
@@ -51,6 +52,7 @@ function CanvasInner({ initialNodes, initialEdges }: ProjectCanvasProps) {
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
   const [saveError, setSaveError] = useState<string | null>(null)
+  const [previewOpen, setPreviewOpen] = useState(false)
 
   // Edge label edit state
   const [edgeLabelDraft, setEdgeLabelDraft] = useState<{ label: string; labelType: 'time' | 'action' }>({ label: '', labelType: 'action' })
@@ -232,6 +234,7 @@ function CanvasInner({ initialNodes, initialEdges }: ProjectCanvasProps) {
       <CanvasToolbar
         onAddNode={handleAddNode}
         onSave={handleSave}
+        onPreview={() => setPreviewOpen(true)}
         saving={saving}
         saved={saved}
         saveError={saveError}
@@ -320,6 +323,16 @@ function CanvasInner({ initialNodes, initialEdges }: ProjectCanvasProps) {
         onDelete={handleNodeDelete}
         onClose={() => setSelectedNodeId(null)}
       />
+
+      {/* Preview modal */}
+      {previewOpen && (
+        <CanvasPreviewModal
+          nodes={nodes}
+          edges={edges}
+          onNodesChange={(updated) => setNodes(updated)}
+          onClose={() => setPreviewOpen(false)}
+        />
+      )}
     </div>
   )
 }

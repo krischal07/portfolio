@@ -47,6 +47,8 @@ export async function PUT(request: NextRequest) {
     date: n.date ?? null,
     positionX: n.positionX,
     positionY: n.positionY,
+    mobilePositionX: n.mobilePositionX ?? null,
+    mobilePositionY: n.mobilePositionY ?? null,
     createdAt: now,
     updatedAt: now,
   }))

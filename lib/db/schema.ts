@@ -99,6 +99,8 @@ export const projectNode = pgTable('project_nodes', {
   date: text('date'),
   positionX: real('position_x').notNull().default(0),
   positionY: real('position_y').notNull().default(0),
+  mobilePositionX: real('mobile_position_x'),
+  mobilePositionY: real('mobile_position_y'),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
 })

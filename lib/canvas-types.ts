@@ -16,6 +16,8 @@ export interface CanvasNodeData {
   date?: string | null
   positionX: number
   positionY: number
+  mobilePositionX?: number | null
+  mobilePositionY?: number | null
 }
 
 export interface CanvasEdgeData {

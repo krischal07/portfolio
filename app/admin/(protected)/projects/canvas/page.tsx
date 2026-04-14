@@ -28,6 +28,8 @@ export default async function CanvasEditorPage() {
       githubUrl: n.githubUrl,
       liveUrl: n.liveUrl,
       date: n.date,
+      mobilePositionX: n.mobilePositionX ?? null,
+      mobilePositionY: n.mobilePositionY ?? null,
       editorMode: true,
     },
   }))
