@@ -155,6 +155,7 @@ export const projectNode = pgTable('project_nodes', {
   iconName: text('icon_name').notNull().default('bulb'),
   iconColor: text('icon_color').notNull().default('#ffffff'),
   iconBgColor: text('icon_bg_color').notNull().default('#0d9488'),
+  logoUrl: text('logo_url'),
   category: text('category').notNull(),
   title: text('title').notNull(),
   description: text('description').notNull().default(''),

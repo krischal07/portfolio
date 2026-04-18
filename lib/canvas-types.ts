@@ -7,6 +7,7 @@ export interface CanvasNodeData {
   iconName: string
   iconColor: string
   iconBgColor: string
+  logoUrl?: string | null
   category: string
   title: string
   description: string

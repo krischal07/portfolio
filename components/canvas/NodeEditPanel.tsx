@@ -1,6 +1,7 @@
 'use client'
 
-import { IoCloseOutline, IoTrashOutline } from 'react-icons/io5'
+import { useRef, useState } from 'react'
+import { IoCloseOutline, IoTrashOutline, IoImageOutline, IoCloudUploadOutline } from 'react-icons/io5'
 import IconSelector from './IconSelector'
 import TechStackSelector from './TechStackSelector'
 import type { RFNodeData } from '@/lib/canvas-types'
@@ -24,10 +25,34 @@ export default function NodeEditPanel({
   onNudge,
   onResetStyle,
 }: NodeEditPanelProps) {
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  const [uploading, setUploading] = useState(false)
+  const [uploadError, setUploadError] = useState<string | null>(null)
+
   function patch<K extends keyof RFNodeData>(key: K, value: RFNodeData[K]) {
     if (!node) return
     const updated = { ...node, [key]: value }
     onUpdate(updated)
+  }
+
+  async function handleLogoUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file || !node) return
+    setUploading(true)
+    setUploadError(null)
+    try {
+      const fd = new FormData()
+      fd.append('file', file)
+      const res = await fetch('/api/upload', { method: 'POST', body: fd })
+      if (!res.ok) throw new Error('Upload failed')
+      const { url } = await res.json()
+      patch('logoUrl', url)
+    } catch {
+      setUploadError('Upload failed. Try again.')
+    } finally {
+      setUploading(false)
+      if (fileInputRef.current) fileInputRef.current.value = ''
+    }
   }
 
   const visible = !!node
@@ -122,7 +147,7 @@ export default function NodeEditPanel({
               />
             </div>
 
-            {/* Icon */}
+            {/* Icon / Logo */}
             <div>
               <label className="block text-[10px] font-semibold uppercase tracking-widest text-gray-400 mb-1.5">
                 Icon
@@ -131,6 +156,67 @@ export default function NodeEditPanel({
                 value={node.iconName}
                 onChange={(name) => patch('iconName', name)}
               />
+            </div>
+
+            {/* Custom Logo */}
+            <div>
+              <label className="block text-[10px] font-semibold uppercase tracking-widest text-gray-400 mb-1.5">
+                Custom Logo
+                <span className="ml-1.5 normal-case tracking-normal font-normal text-gray-400">
+                  (overrides icon)
+                </span>
+              </label>
+
+              {node.logoUrl ? (
+                <div className="flex items-center gap-3">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={node.logoUrl}
+                    alt="logo"
+                    className="w-10 h-10 rounded-xl object-cover border border-gray-200 dark:border-neutral-700"
+                  />
+                  <div className="flex flex-col gap-1.5">
+                    <button
+                      type="button"
+                      onClick={() => fileInputRef.current?.click()}
+                      disabled={uploading}
+                      className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-gray-100 dark:bg-neutral-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-neutral-700 transition-colors disabled:opacity-50"
+                    >
+                      <IoCloudUploadOutline size={13} />
+                      {uploading ? 'Uploading…' : 'Replace'}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => patch('logoUrl', null)}
+                      className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold text-red-500 border border-red-200 dark:border-red-900/50 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+                    >
+                      Remove logo
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={uploading}
+                  className="flex items-center gap-2 w-full px-3 py-2.5 rounded-xl border-2 border-dashed border-gray-200 dark:border-neutral-700 text-xs font-semibold text-gray-500 dark:text-neutral-400 hover:border-blue-400 hover:text-blue-500 transition-colors disabled:opacity-50"
+                >
+                  <IoImageOutline size={15} />
+                  {uploading ? 'Uploading…' : 'Upload logo image'}
+                </button>
+              )}
+
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleLogoUpload}
+              />
+
+              {uploadError && (
+                <p className="mt-1 text-[10px] text-red-500">{uploadError}</p>
+              )}
             </div>
 
             {/* Colors */}

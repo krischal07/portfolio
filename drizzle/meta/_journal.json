@@ -57,6 +57,13 @@
       "when": 1776509698019,
       "tag": "0007_sad_james_howlett",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1776512025445,
+      "tag": "0008_tan_maginty",
+      "breakpoints": true
     }
   ]
 }

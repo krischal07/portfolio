@@ -246,6 +246,7 @@ function CanvasInner({ initialNodes, initialEdges }: ProjectCanvasProps) {
       iconName: n.data.iconName,
       iconColor: n.data.iconColor,
       iconBgColor: n.data.iconBgColor,
+      logoUrl: n.data.logoUrl ?? null,
       category: n.data.category,
       title: n.data.title,
       description: n.data.description,

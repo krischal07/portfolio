@@ -16,6 +16,7 @@
     "@neondatabase/serverless": "^1.0.2",
     "@xyflow/react": "^12.10.2",
     "better-auth": "^1.6.2",
+    "cloudinary": "^2.9.0",
     "dotenv": "^17.4.2",
     "drizzle-orm": "^0.45.2",
     "lottie-react": "^2.4.1",

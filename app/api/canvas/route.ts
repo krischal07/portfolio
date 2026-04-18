@@ -38,6 +38,7 @@ export async function PUT(request: NextRequest) {
     iconName: n.iconName,
     iconColor: n.iconColor,
     iconBgColor: n.iconBgColor,
+    logoUrl: n.logoUrl ?? null,
     category: n.category,
     title: n.title,
     description: n.description,

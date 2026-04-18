@@ -67,14 +67,25 @@ function CanvasNodeCard({ data, selected }: NodeProps) {
 
       {/* Header: icon + category + title */}
       <div className={isCompact ? 'flex items-start gap-3' : 'flex items-start gap-3'}>
-        <span
-          className={isCompact
-            ? 'w-9 h-9 rounded-lg flex items-center justify-center shrink-0 text-sm'
-            : 'w-10 h-10 rounded-xl flex items-center justify-center shrink-0 text-base'}
-          style={{ backgroundColor: nodeData.iconBgColor, color: nodeData.iconColor }}
-        >
-          <Icon />
-        </span>
+        {nodeData.logoUrl ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={nodeData.logoUrl}
+            alt="logo"
+            className={isCompact
+              ? 'w-9 h-9 rounded-lg shrink-0 object-cover'
+              : 'w-10 h-10 rounded-xl shrink-0 object-cover'}
+          />
+        ) : (
+          <span
+            className={isCompact
+              ? 'w-9 h-9 rounded-lg flex items-center justify-center shrink-0 text-sm'
+              : 'w-10 h-10 rounded-xl flex items-center justify-center shrink-0 text-base'}
+            style={{ backgroundColor: nodeData.iconBgColor, color: nodeData.iconColor }}
+          >
+            <Icon />
+          </span>
+        )}
         <div className={isCompact ? 'flex flex-col gap-0.5 min-w-0 pt-0.5' : 'flex flex-col gap-0.5 min-w-0 pt-1'}>
           <div className={isCompact ? 'flex items-center gap-1 flex-wrap' : 'flex items-center gap-1.5 flex-wrap'}>
             <span className={isCompact
