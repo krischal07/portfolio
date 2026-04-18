@@ -57,6 +57,8 @@ export async function PUT(request: NextRequest) {
     id: e.id,
     source: e.source,
     target: e.target,
+    sourceHandle: e.sourceHandle ?? null,
+    targetHandle: e.targetHandle ?? null,
     label: e.label ?? null,
     labelType: e.labelType,
     createdAt: now,

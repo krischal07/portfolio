@@ -24,7 +24,7 @@ export default async function ProjectsPage() {
   if (nodes.length === 0) {
     return (
       <main className="mx-auto max-w-3xl w-full px-4 py-8">
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-8">Projects</h2>
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-8">My Journe</h2>
         <p className="text-sm text-gray-500 dark:text-neutral-400">No projects yet.</p>
       </main>
     )
@@ -63,6 +63,8 @@ export default async function ProjectsPage() {
     id: e.id,
     source: e.source,
     target: e.target,
+    sourceHandle: e.sourceHandle ?? undefined,
+    targetHandle: e.targetHandle ?? undefined,
     type: 'journeyEdge',
     data: {
       label: e.label,
@@ -118,7 +120,7 @@ export default async function ProjectsPage() {
   return (
     <main className="mx-auto md:max-w-3xl w-full px-4 py-8">
       <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-8">
-        Projects
+        My Little Journey
       </h2>
 
       <div className="md:hidden w-full">

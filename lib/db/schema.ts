@@ -178,6 +178,8 @@ export const projectEdge = pgTable('project_edges', {
   target: text('target')
     .notNull()
     .references(() => projectNode.id, { onDelete: 'cascade' }),
+  sourceHandle: text('source_handle'),
+  targetHandle: text('target_handle'),
   label: text('label'),
   labelType: text('label_type', { enum: ['time', 'action'] })
     .notNull()

@@ -261,6 +261,8 @@ function CanvasInner({ initialNodes, initialEdges }: ProjectCanvasProps) {
       id: e.id,
       source: e.source,
       target: e.target,
+      sourceHandle: e.sourceHandle ?? null,
+      targetHandle: e.targetHandle ?? null,
       label: e.data?.label ?? null,
       labelType: e.data?.labelType ?? 'action',
     }))

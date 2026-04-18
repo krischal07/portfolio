@@ -39,6 +39,8 @@ export default async function CanvasEditorPage() {
     id: e.id,
     source: e.source,
     target: e.target,
+    sourceHandle: e.sourceHandle ?? undefined,
+    targetHandle: e.targetHandle ?? undefined,
     type: 'journeyEdge',
     data: {
       label: e.label,

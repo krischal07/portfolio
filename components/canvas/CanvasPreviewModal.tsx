@@ -21,7 +21,7 @@ import NodeEditPanel from './NodeEditPanel'
 import CanvasPreviewInteractive from './CanvasPreviewInteractive'
 
 // ─── Constants (mirror app/projects/page.tsx) ────────────────────────────────
-const NODE_WIDTH = 220
+const NODE_WIDTH = 260
 const NODE_HEIGHT = 190
 const CANVAS_PADDING = 80
 const MOBILE_CANVAS_WIDTH = 360
@@ -458,7 +458,7 @@ export default function CanvasPreviewModal({ nodes, edges, onClose, onNodesChang
       {/* Body — relative so NodeEditPanel can slide in from right */}
       <div className="relative flex-1 overflow-hidden">
         {/* Scrollable preview area */}
-        <div className="overflow-auto h-full flex items-start justify-center py-8 px-4">
+        <div className="overflow-y-auto h-full flex flex-col items-center py-8 px-4 gap-0">
 
           {/* Mobile */}
           {activeDevice === 'mobile' && (

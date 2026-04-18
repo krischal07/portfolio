@@ -20,10 +20,11 @@ function CanvasNodeCard({ data, selected }: NodeProps) {
       className={[
         isCompact
           ? 'w-[184px] bg-white dark:bg-neutral-900 border rounded-xl shadow-sm p-3 flex flex-col gap-1.5 transition-all'
-          : 'w-[220px] bg-white dark:bg-neutral-900 border rounded-2xl shadow-sm p-4 flex flex-col gap-2 transition-all',
+          : 'w-[260px] bg-white dark:bg-neutral-900 border rounded-2xl shadow-sm p-4 flex flex-col gap-2 transition-all',
         selected
           ? 'border-blue-500 ring-2 ring-blue-400/30'
           : 'border-gray-200 dark:border-neutral-700',
+        'pointer-events-auto',
       ].join(' ')}
     >
       {/* Keep handles mounted for exact edge anchoring in view mode */}
@@ -105,8 +106,8 @@ function CanvasNodeCard({ data, selected }: NodeProps) {
       {/* Description */}
       {nodeData.description && (
         <p className={isCompact
-          ? 'text-[12px] text-gray-500 dark:text-neutral-400 leading-relaxed line-clamp-3'
-          : 'text-xs text-gray-500 dark:text-neutral-400 leading-relaxed line-clamp-3'}>
+          ? 'text-[12px] text-gray-500 dark:text-neutral-400 leading-relaxed'
+          : 'text-xs text-gray-500 dark:text-neutral-400 leading-relaxed'}>
           {nodeData.description}
         </p>
       )}
@@ -165,7 +166,7 @@ function CanvasNodeCard({ data, selected }: NodeProps) {
           )}
           {nodeData.liveUrl && (
             <a
-              href={nodeData.liveUrl}
+              href={nodeData.liveUrl.match(/^https?:\/\//) ? nodeData.liveUrl : `https://${nodeData.liveUrl}`}
               target="_blank"
               rel="noopener noreferrer"
               onClick={(e) => e.stopPropagation()}
