@@ -36,7 +36,7 @@ export default async function Header() {
 
       <div className="flex flex-col gap-3 text-sm text-gray-600 dark:text-neutral-400">
         <div
-          className="space-y-3 [&_a]:underline [&_a]:underline-offset-2 [&_a]:hover:opacity-80 [&_p]:leading-relaxed"
+          className="min-w-0 space-y-3 break-words [&_a]:underline [&_a]:underline-offset-2 [&_a]:hover:opacity-80 [&_p]:leading-relaxed"
           dangerouslySetInnerHTML={{ __html: info.bioHtml }}
         />
       </div>

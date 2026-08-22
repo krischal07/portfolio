@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { revalidatePath } from 'next/cache'
 import { db } from '@/lib/db'
 import { project } from '@/lib/db/schema'
 import { auth } from '@/lib/auth'
@@ -44,6 +45,8 @@ export async function POST(request: NextRequest) {
       updatedAt: new Date(),
     })
     .returning()
+
+  revalidatePath('/projects')
 
   return NextResponse.json(created[0], { status: 201 })
 }

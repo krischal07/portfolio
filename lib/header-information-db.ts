@@ -11,6 +11,10 @@ export type HeaderInformationRecord = HeaderInformationValues & {
   updatedAt: Date
 }
 
+function normalizeBioHtml(html: string) {
+  return html.replace(/&nbsp;|&#160;|&#xa0;/gi, ' ').replace(/\u00A0/g, ' ')
+}
+
 export function isMissingHeaderInformationTableError(error: unknown) {
   if (!error || typeof error !== 'object') return false
 
@@ -35,7 +39,10 @@ export async function getHeaderInformationSafe(): Promise<HeaderInformationRecor
       return {
         name: existing[0].name,
         tagline: existing[0].tagline,
-        bioHtml: existing[0].bioHtml || fallbackBioHtml || HEADER_INFORMATION_DEFAULTS.bioHtml,
+        bioHtml:
+          normalizeBioHtml(existing[0].bioHtml) ||
+          normalizeBioHtml(fallbackBioHtml) ||
+          HEADER_INFORMATION_DEFAULTS.bioHtml,
         email: existing[0].email,
         avatarLight: existing[0].avatarLight,
         avatarDark: existing[0].avatarDark,

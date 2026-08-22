@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { revalidatePath } from 'next/cache'
 import { eq } from 'drizzle-orm'
 import { headers } from 'next/headers'
 import { db } from '@/lib/db'
@@ -94,6 +95,8 @@ export async function PUT(request: NextRequest) {
       },
     })
     .returning()
+
+  revalidatePath('/')
 
   return NextResponse.json(toResponse(updated[0]))
 }
