@@ -10,6 +10,7 @@ const QUERY = `
             contributionDays {
               date
               contributionCount
+              contributionLevel
             }
           }
         }

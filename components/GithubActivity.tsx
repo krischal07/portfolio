@@ -3,9 +3,12 @@
 import { useEffect, useState } from 'react'
 
 // ── Types ──────────────────────────────────────────────────────
+type ContributionLevel = 'NONE' | 'FIRST_QUARTILE' | 'SECOND_QUARTILE' | 'THIRD_QUARTILE' | 'FOURTH_QUARTILE'
+
 type ContributionDay = {
   date: string
   contributionCount: number
+  contributionLevel: ContributionLevel
 }
 
 type ContributionWeek = {
@@ -19,13 +22,23 @@ type ContributionData = {
 
 // ── Helpers ────────────────────────────────────────────────────
 const CELL_STEP = 15 // cell (12px) + gap (3px)
+const CONTRIBUTION_COLORS: Record<ContributionLevel, string> = {
+  NONE: 'bg-[#ebedf0] dark:bg-[#161b22]',
+  FIRST_QUARTILE: 'bg-[#9be9a8] dark:bg-[#0e4429]',
+  SECOND_QUARTILE: 'bg-[#40c463] dark:bg-[#006d32]',
+  THIRD_QUARTILE: 'bg-[#30a14e] dark:bg-[#26a641]',
+  FOURTH_QUARTILE: 'bg-[#216e39] dark:bg-[#39d353]',
+}
+const LEGEND_LEVELS: ContributionLevel[] = [
+  'NONE',
+  'FIRST_QUARTILE',
+  'SECOND_QUARTILE',
+  'THIRD_QUARTILE',
+  'FOURTH_QUARTILE',
+]
 
-function getColor(count: number): string {
-  if (count === 0) return 'bg-gray-100 dark:bg-neutral-800'
-  if (count <= 3)  return 'bg-green-200'
-  if (count <= 6)  return 'bg-green-400'
-  if (count <= 9)  return 'bg-green-500'
-  return 'bg-green-700'
+function getColor(level: ContributionLevel): string {
+  return CONTRIBUTION_COLORS[level]
 }
 
 function getMonthSpans(weeks: ContributionWeek[]) {
@@ -44,7 +57,7 @@ function getMonthSpans(weeks: ContributionWeek[]) {
   return spans
 }
 
-const LEGEND = ['bg-gray-100 dark:bg-neutral-800', 'bg-green-200', 'bg-green-400', 'bg-green-500', 'bg-green-700']
+const WEEKDAY_LABELS = ['', 'Mon', '', 'Wed', '', 'Fri', '']
 
 // ── Component ──────────────────────────────────────────────────
 const GithubActivity = () => {
@@ -63,8 +76,6 @@ const GithubActivity = () => {
       .finally(() => setLoading(false))
   }, [])
 
-  const year = new Date().getFullYear()
-
   return (
     <section className="flex flex-col gap-3 py-4">
       <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">GitHub Activity</h2>
@@ -81,39 +92,48 @@ const GithubActivity = () => {
         <>
           {/* Month labels */}
           <div className="overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            <div className="flex" style={{ gap: 0 }}>
-              {getMonthSpans(data.weeks).map(({ name, weeks }, i) => (
-                <div
-                  key={`${name}-${i}`}
-                  className="text-xs text-gray-400 dark:text-neutral-500 shrink-0 truncate"
-                  style={{ width: weeks * CELL_STEP }}
-                >
-                  {name}
-                </div>
-              ))}
-            </div>
-
-            {/* Contribution grid */}
-            <div className="flex gap-0.75 mt-4">
-              {data.weeks.map((week, wi) => (
-                <div key={wi} className="flex flex-col gap-0.75">
-                  {week.contributionDays.map((day) => (
+            <div className="flex min-w-max gap-2">
+              <div className="flex flex-col gap-0.75 pt-8 text-[10px] leading-3 text-gray-400 dark:text-neutral-500">
+                {WEEKDAY_LABELS.map((label, i) => (
+                  <span key={i} className="h-3 w-6">{label}</span>
+                ))}
+              </div>
+              <div>
+                <div className="flex" style={{ gap: 0 }}>
+                  {getMonthSpans(data.weeks).map(({ name, weeks }, i) => (
                     <div
-                      key={day.date}
-                      className="relative group w-3 h-3"
+                      key={`${name}-${i}`}
+                      className="text-xs text-gray-400 dark:text-neutral-500 shrink-0 truncate"
+                      style={{ width: weeks * CELL_STEP }}
                     >
-                      <div className={`w-3 h-3 rounded-sm ${getColor(day.contributionCount)}`} />
-                      <div className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 z-50 opacity-0 group-hover:opacity-100 transition-opacity duration-150">
-                        <div className="bg-gray-900 text-white text-xs rounded px-2 py-1 whitespace-nowrap">
-                          <span className="font-semibold">{day.contributionCount}</span>
-                          {' '}contribution{day.contributionCount !== 1 ? 's' : ''} on{' '}
-                          {new Date(day.date + 'T00:00:00').toLocaleDateString('en', { month: 'short', day: 'numeric', year: 'numeric' })}
-                        </div>
-                      </div>
+                      {name}
                     </div>
                   ))}
                 </div>
-              ))}
+
+                {/* Contribution grid */}
+                <div className="flex gap-0.75 mt-4">
+                  {data.weeks.map((week, wi) => (
+                    <div key={wi} className="flex flex-col gap-0.75">
+                      {week.contributionDays.map((day) => (
+                        <div
+                          key={day.date}
+                          className="relative group w-3 h-3"
+                        >
+                          <div className={`w-3 h-3 rounded-sm ${getColor(day.contributionLevel)}`} />
+                          <div className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 z-50 opacity-0 group-hover:opacity-100 transition-opacity duration-150">
+                            <div className="bg-gray-900 text-white text-xs rounded px-2 py-1 whitespace-nowrap">
+                              <span className="font-semibold">{day.contributionCount}</span>
+                              {' '}contribution{day.contributionCount !== 1 ? 's' : ''} on{' '}
+                              {new Date(day.date + 'T00:00:00').toLocaleDateString('en', { month: 'short', day: 'numeric', year: 'numeric' })}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
 
@@ -123,7 +143,7 @@ const GithubActivity = () => {
               <span className="font-medium text-gray-700 dark:text-gray-300">
                 {data.totalContributions.toLocaleString()}
               </span>{' '}
-              contributions in {year} on{' '}
+              contributions in the last year on{' '}
               <a
                 href={`https://github.com/${process.env.NEXT_PUBLIC_GITHUB_USERNAME ?? 'krischal07'}`}
                 target="_blank"
@@ -137,8 +157,8 @@ const GithubActivity = () => {
 
             <div className="flex items-center gap-1.5 text-xs text-gray-400 dark:text-neutral-500">
               <span>Less</span>
-              {LEGEND.map((cls) => (
-                <div key={cls} className={`w-3 h-3 rounded-sm ${cls}`} />
+              {LEGEND_LEVELS.map((level) => (
+                <div key={level} className={`w-3 h-3 rounded-sm ${getColor(level)}`} />
               ))}
               <span>More</span>
             </div>

@@ -120,6 +120,7 @@ export const experienceSettings = pgTable('experience_settings', {
       Array<{
         id: string
         company: string
+        website?: string
         logoIcon: string
         logoPath?: string
         logoPathLight?: string

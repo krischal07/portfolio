@@ -23,6 +23,7 @@ export type ExperienceRole = {
 export type ExperienceItem = {
   id: string
   company: string
+  website?: string
   logoIcon: string
   logoPath?: string
   logoPathLight?: string

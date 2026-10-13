@@ -18,9 +18,9 @@ const Navbar = () => {
 
   return (
     <nav className="sticky top-0 z-50 w-full backdrop-blur-sm bg-[var(--navbar-bg)] dark:bg-black/80 border-b border-gray-200 dark:border-neutral-800">
-      <div className="mx-auto md:max-w-3xl w-full px-4 h-12 flex items-center justify-between">
+      <div className="mx-auto flex h-12 w-full min-w-0 max-w-3xl items-center justify-between px-4">
         {/* Left: nav links */}
-        <ul className="flex items-center gap-6">
+        <ul className="flex min-w-0 items-center gap-4 sm:gap-6">
           {navLinks.map(({ label, href }) => (
             <li key={href}>
               <Link
@@ -39,15 +39,15 @@ const Navbar = () => {
         </ul>
 
         {/* Right: search shortcut + dark mode toggle */}
-        <div className="flex items-center gap-3">
+        <div className="flex shrink-0 items-center gap-2 sm:gap-3">
           {/* Search shortcut pill */}
           <button
             aria-label="Search"
-            className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg border border-gray-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-gray-400 dark:text-neutral-500 hover:text-gray-600 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-neutral-600 transition-colors text-sm"
+            className="flex h-9 items-center gap-1.5 rounded-lg border border-gray-200 bg-white px-2.5 py-1 text-sm text-gray-400 transition-colors hover:border-gray-300 hover:text-gray-600 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-500 dark:hover:border-neutral-600 dark:hover:text-gray-300"
           >
             <IoSearchOutline className="text-base" />
-            <span className="text-xs">⌘</span>
-            <span className="text-xs font-medium">K</span>
+            <span className="hidden text-xs sm:inline">⌘</span>
+            <span className="hidden text-xs font-medium sm:inline">K</span>
           </button>
 
           {/* Light bulb toggle */}

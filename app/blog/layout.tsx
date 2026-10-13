@@ -3,19 +3,26 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Blog",
   description:
-    "Engineering write-ups, build notes, and thoughts from Krischal Shrestha — coming soon.",
+    "Build notes from Krischal Shrestha on Markish, social media management, product design, and software engineering.",
+  keywords: [
+    "Markish",
+    "markish.tech",
+    "social media management",
+    "content planning",
+    "Krischal Shrestha blog",
+  ],
   alternates: {
     canonical: "https://krischal.space/blog",
   },
   openGraph: {
     url: "https://krischal.space/blog",
-    title: "Blog | Krischal Shrestha",
+    title: "Markish & Product Building | Krischal Shrestha",
     description:
-      "Engineering write-ups, build notes, and thoughts from Krischal Shrestha — coming soon.",
+      "Build notes on Markish, social media management, product design, and software engineering.",
   },
   robots: {
-    index: false,
-    follow: false,
+    index: true,
+    follow: true,
   },
 };
 

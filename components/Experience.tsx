@@ -267,9 +267,21 @@ const Experience = ({ items }: { items: ExperienceItem[] }) => {
                 logoPathLight={company.logoPathLight}
                 logoPathDark={company.logoPathDark}
               />
-              <span className="text-base font-bold text-gray-900 dark:text-gray-100 leading-tight">
-                {company.company}
-              </span>
+              {company.website ? (
+                <a
+                  href={company.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-base font-bold text-gray-900 dark:text-gray-100 leading-tight underline decoration-gray-300 underline-offset-4 hover:decoration-current"
+                >
+                  {company.company}
+                  <span className="sr-only"> (company website)</span>
+                </a>
+              ) : (
+                <span className="text-base font-bold text-gray-900 dark:text-gray-100 leading-tight">
+                  {company.company}
+                </span>
+              )}
 
               {company.current && (
                 <span className="flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-green-100 dark:bg-green-900/30 text-xs text-gray-700 dark:text-green-300 shrink-0">

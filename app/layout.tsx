@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     template: "%s | Krischal Shrestha",
   },
   description:
-    "Krischal Shrestha is a design-minded software engineer building scalable systems. Founder of Rocket Space, building Samparka and Upasthit.",
+    "Krischal Shrestha is a design-minded software engineer and co-founder of Markish, building social media tools alongside Samparka, Upasthit, and Rocket Space.",
   keywords: [
     "Krischal Shrestha",
     "software engineer",
@@ -33,6 +33,9 @@ export const metadata: Metadata = {
     "Rocket Space",
     "Samparka",
     "Upasthit",
+    "Markish",
+    "markish.tech",
+    "social media management",
   ],
   authors: [{ name: "Krischal Shrestha", url: "https://krischal.space" }],
   creator: "Krischal Shrestha",
@@ -43,7 +46,7 @@ export const metadata: Metadata = {
     siteName: "Krischal Shrestha",
     title: "Krischal Shrestha — Software Engineer",
     description:
-      "Design-minded software engineer building scalable systems. Founder of Rocket Space, building Samparka and Upasthit.",
+      "Design-minded software engineer and co-founder of Markish, building social media tools alongside Samparka, Upasthit, and Rocket Space.",
     images: [
       {
         url: "/profile/pp_light.png",
@@ -57,7 +60,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Krischal Shrestha — Software Engineer",
     description:
-      "Design-minded software engineer building scalable systems. Founder of Rocket Space, building Samparka and Upasthit.",
+      "Design-minded software engineer and co-founder of Markish, building social media tools alongside Samparka, Upasthit, and Rocket Space.",
     images: ["/profile/pp_light.png"],
   },
   robots: {

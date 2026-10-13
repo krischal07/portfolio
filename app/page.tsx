@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     absolute: "Krischal Shrestha — Software Engineer",
   },
   description:
-    "Krischal Shrestha is a design-minded software engineer building scalable systems. Founder of Rocket Space, building Samparka and Upasthit.",
+    "Krischal Shrestha is a design-minded software engineer and co-founder of Markish, building social media tools alongside Samparka, Upasthit, and Rocket Space.",
   alternates: {
     canonical: "https://krischal.space",
   },
@@ -26,7 +26,7 @@ const Home = async () => {
   const subInfo = await getSubInfoSafe()
 
   return (
-    <div className='mx-auto md:max-w-3xl *:[[id]]:scroll-mt-22 min-h-screen w-full px-4 '>
+    <div className='mx-auto min-h-screen w-full min-w-0 max-w-3xl px-4 *:[[id]]:scroll-mt-22'>
       <Header />
       <SubInfo tzOffset={subInfo.tzOffset} info={subInfo.items} />
       <SocialMediaHandles/>
