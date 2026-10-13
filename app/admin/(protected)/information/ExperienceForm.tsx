@@ -8,6 +8,9 @@ import {
   IoAdd,
   IoTrashOutline,
   IoSparklesOutline,
+  IoReorderThreeOutline,
+  IoChevronUpOutline,
+  IoChevronDownOutline,
 } from 'react-icons/io5'
 import {
   SiCss,
@@ -134,6 +137,8 @@ export default function ExperienceForm({ initialValues }: { initialValues: Exper
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
+  const [draggedCompanyId, setDraggedCompanyId] = useState<string | null>(null)
+  const [dragOverCompanyId, setDragOverCompanyId] = useState<string | null>(null)
 
   const selectedCompany = values.items[companyIndex]
   const selectedRole = selectedCompany?.roles[roleIndex]
@@ -171,6 +176,32 @@ export default function ExperienceForm({ initialValues }: { initialValues: Exper
     setValues((prev) => ({ ...prev, items: prev.items.filter((_, i) => i !== index) }))
     setCompanyIndex(0)
     setRoleIndex(0)
+  }
+
+  function reorderCompany(fromIndex: number, toIndex: number) {
+    if (fromIndex === toIndex || fromIndex < 0 || toIndex < 0 || toIndex >= values.items.length) return
+
+    const selectedCompanyId = values.items[companyIndex]?.id
+    const nextItems = [...values.items]
+    const [company] = nextItems.splice(fromIndex, 1)
+    nextItems.splice(toIndex, 0, company)
+    setValues((prev) => ({ ...prev, items: nextItems }))
+
+    const nextCompanyIndex = nextItems.findIndex((item) => item.id === selectedCompanyId)
+    if (nextCompanyIndex >= 0) setCompanyIndex(nextCompanyIndex)
+  }
+
+  function handleCompanyDrop(event: React.DragEvent<HTMLDivElement>, targetIndex: number) {
+    event.preventDefault()
+    const fromIndex = values.items.findIndex((item) => item.id === draggedCompanyId)
+    if (fromIndex >= 0) {
+      const bounds = event.currentTarget.getBoundingClientRect()
+      const insertAfter = event.clientY > bounds.top + bounds.height / 2
+      const toIndex = targetIndex + (insertAfter ? 1 : 0) - (fromIndex < targetIndex + (insertAfter ? 1 : 0) ? 1 : 0)
+      reorderCompany(fromIndex, toIndex)
+    }
+    setDraggedCompanyId(null)
+    setDragOverCompanyId(null)
   }
 
   function addRole() {
@@ -237,27 +268,66 @@ export default function ExperienceForm({ initialValues }: { initialValues: Exper
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-[280px_1fr]">
         <div className="rounded-xl border border-gray-200 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-900">
           <div className="mb-3 flex items-center justify-between">
-            <p className="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-neutral-400">Companies</p>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-neutral-400">Companies</p>
+              <p className="mt-1 text-[11px] text-gray-400 dark:text-neutral-500">Drag to reorder · first appears first</p>
+            </div>
             <button type="button" onClick={addCompany} className="inline-flex items-center gap-1 rounded-md border border-gray-200 px-2 py-1 text-xs text-gray-600 hover:bg-gray-50 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800"><IoAdd /> Add</button>
           </div>
           <div className="space-y-2">
             {values.items.map((company, cIndex) => (
-              <button
+              <div
                 key={company.id}
-                type="button"
-                onClick={() => {
-                  setCompanyIndex(cIndex)
-                  setRoleIndex(0)
+                onDragOver={(event) => {
+                  event.preventDefault()
+                  event.dataTransfer.dropEffect = 'move'
+                  setDragOverCompanyId(company.id)
                 }}
-                className={`w-full rounded-lg border px-3 py-2 text-left transition-colors ${
+                onDrop={(event) => handleCompanyDrop(event, cIndex)}
+                className={`flex items-center gap-1 rounded-lg border p-1 transition-colors ${
                   cIndex === companyIndex
                     ? 'border-gray-900 bg-gray-50 dark:border-white dark:bg-neutral-800'
                     : 'border-gray-200 hover:bg-gray-50 dark:border-neutral-700 dark:hover:bg-neutral-800/70'
-                }`}
+                } ${dragOverCompanyId === company.id ? 'ring-2 ring-blue-400 dark:ring-blue-500' : ''} ${draggedCompanyId === company.id ? 'opacity-50' : ''}`}
               >
-                <p className="truncate text-sm font-semibold text-gray-900 dark:text-white">{company.company}</p>
-                <p className="truncate text-xs text-gray-500 dark:text-neutral-400">{company.location}</p>
-              </button>
+                <button
+                  type="button"
+                  draggable
+                  aria-label={`Drag to reorder ${company.company}`}
+                  onDragStart={(event) => {
+                    event.dataTransfer.effectAllowed = 'move'
+                    event.dataTransfer.setData('text/plain', company.id)
+                    setDraggedCompanyId(company.id)
+                  }}
+                  onDragEnd={() => {
+                    setDraggedCompanyId(null)
+                    setDragOverCompanyId(null)
+                  }}
+                  className="cursor-grab touch-none px-1.5 py-2 text-gray-400 active:cursor-grabbing dark:text-neutral-500"
+                  title="Drag to reorder"
+                >
+                  <IoReorderThreeOutline aria-hidden="true" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setCompanyIndex(cIndex)
+                    setRoleIndex(0)
+                  }}
+                  className="min-w-0 flex-1 py-1 text-left"
+                >
+                  <p className="truncate text-sm font-semibold text-gray-900 dark:text-white">{company.company}</p>
+                  <p className="truncate text-xs text-gray-500 dark:text-neutral-400">{company.location}</p>
+                </button>
+                <div className="flex shrink-0 flex-col">
+                  <button type="button" aria-label={`Move ${company.company} up`} disabled={cIndex === 0} onClick={() => reorderCompany(cIndex, cIndex - 1)} className="rounded p-0.5 text-gray-400 hover:text-gray-900 disabled:opacity-30 dark:text-neutral-500 dark:hover:text-white">
+                    <IoChevronUpOutline aria-hidden="true" />
+                  </button>
+                  <button type="button" aria-label={`Move ${company.company} down`} disabled={cIndex === values.items.length - 1} onClick={() => reorderCompany(cIndex, cIndex + 1)} className="rounded p-0.5 text-gray-400 hover:text-gray-900 disabled:opacity-30 dark:text-neutral-500 dark:hover:text-white">
+                    <IoChevronDownOutline aria-hidden="true" />
+                  </button>
+                </div>
+              </div>
             ))}
           </div>
         </div>

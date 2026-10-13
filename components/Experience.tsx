@@ -283,7 +283,7 @@ const Experience = ({ items }: { items: ExperienceItem[] }) => {
                 </span>
               )}
 
-              {company.current && (
+              {company.current && company.roles.some((role) => !role.endDate) && (
                 <span className="flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-green-100 dark:bg-green-900/30 text-xs text-gray-700 dark:text-green-300 shrink-0">
                   <span className="relative flex w-1.5 h-1.5 shrink-0">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />

@@ -91,8 +91,8 @@ const GithubActivity = () => {
       {data && (
         <>
           {/* Month labels */}
-          <div className="overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            <div className="flex min-w-max gap-2">
+          <div className="w-full min-w-0 max-w-full overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            <div className="inline-flex w-max gap-2">
               <div className="flex flex-col gap-0.75 pt-8 text-[10px] leading-3 text-gray-400 dark:text-neutral-500">
                 {WEEKDAY_LABELS.map((label, i) => (
                   <span key={i} className="h-3 w-6">{label}</span>
@@ -121,7 +121,13 @@ const GithubActivity = () => {
                           className="relative group w-3 h-3"
                         >
                           <div className={`w-3 h-3 rounded-sm ${getColor(day.contributionLevel)}`} />
-                          <div className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 z-50 opacity-0 group-hover:opacity-100 transition-opacity duration-150">
+                          <div className={`pointer-events-none absolute bottom-full mb-1.5 z-50 opacity-0 group-hover:opacity-100 transition-opacity duration-150 ${
+                            wi < 7
+                              ? 'left-0'
+                              : wi >= data.weeks.length - 7
+                                ? 'right-0'
+                                : 'left-1/2 -translate-x-1/2'
+                          }`}>
                             <div className="bg-gray-900 text-white text-xs rounded px-2 py-1 whitespace-nowrap">
                               <span className="font-semibold">{day.contributionCount}</span>
                               {' '}contribution{day.contributionCount !== 1 ? 's' : ''} on{' '}
